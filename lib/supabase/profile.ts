@@ -1,10 +1,11 @@
-import { supabase } from "@/lib/supabaseClient"; // 기존에 만들었던 supabase client 사용
+import { supabase } from "@/lib/supabaseClient";
+import type { UserProfile } from "@/types/profile";
 
-export const fetchProfileById = async (id: string) => {
+export const fetchProfileById = async (id: string): Promise<UserProfile | null> => {
   const { data, error } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", id) // filtered by user ID that added on the supabase profile DB
+    .eq("id", id)
     .single();
 
   if (error) {
@@ -12,5 +13,5 @@ export const fetchProfileById = async (id: string) => {
     return null;
   }
 
-  return data;
+  return data as UserProfile;
 };

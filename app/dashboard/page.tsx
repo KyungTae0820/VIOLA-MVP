@@ -11,6 +11,7 @@ import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/comp
 import { Bell, ChevronDown, Search, Users, Calendar, Plus as PlusIcon } from 'lucide-react';
 import Link from "next/link"; //페이지 라우팅
 import { types, ProjectType, Project } from "@/types/project";
+import { UserProfile } from '@/types/profile';
 
 const dashboard = () => {
     const [filter, setFilter] = useState("Category");
@@ -26,7 +27,8 @@ const dashboard = () => {
     //Delete function from Supabase
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteProjectIndex, setDeleteProjectIndex] = useState<number | null>(null);
-
+    //Login
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
     //Filtering project
     let filteredProjects: Project[] = [];
@@ -193,6 +195,41 @@ const dashboard = () => {
 
     const isModalActive = showModal && modalMode === "add";
 
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const {
+                    data: { user },
+                    error: userError,
+                } = await supabase.auth.getUser();
+
+                if (userError || !user) {
+                    console.log("No active session or user:", userError?.message);
+                    setUserProfile(null);
+                    return;
+                }
+
+                const { data: profile, error: profileError } = await supabase
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", user.id)
+                    .single();
+
+                if (profileError) {
+                    console.error("❌ Failed to fetch profile:", profileError.message);
+                    return;
+                }
+
+                setUserProfile(profile);
+            } catch (err: any) {
+                console.error("❌  Unexpected error:", err?.message || err);
+            }
+        };
+
+        fetchProfile();
+    }, []);
+
+
     //rendering 
     return (
         <div className="min-h-screen bg-background">
@@ -210,28 +247,42 @@ const dashboard = () => {
                         </div>
                     </div>
 
-                    {/*Right Top Profile Card*/}
-                    <div className="flex items-center justify-end w-full space-x-4">
+                    {/* Right Top Profile Card */}
+                    <div className="flex items-center space-x-4">
                         {/* Welcome Text */}
-                        <p className="italic text-lg hidden md:block">Welcome!</p>
-
-                        {/* Profile Card */}
-                        <Link href="/login">
-                            <div className="flex items-center bg-white shadow-md rounded-full px-4 py-2 space-x-3 hover:cursor-pointer hover:opacity-80 transition">
-                                {/* Profile Image + 88rising Logo */}
-                                <div className="relative w-12 h-12">
+                        <p className="text-base italic font-light text-black">
+                            Welcome{userProfile ? ` ${userProfile.firstname}!` : "!"}
+                        </p>
+                        {userProfile ? (
+                            <>
+                                {/* Profile Card */}
+                                <Link href={`/profile/${userProfile?.id}`}>
+                                    <div className="flex items-center bg-white shadow-sm rounded-full px-3 py-1.5 space-x-3 hover:cursor-pointer hover:opacity-80 transition">
+                                        <img
+                                            src={userProfile.image || "/assets/defaultimg.jpg"}
+                                            alt="Profile"
+                                            className="w-11 h-11 rounded-full object-cover shadow-sm"
+                                        />
+                                        <div className="flex flex-col justify-center">
+                                            <span className="text-sm font-semibold text-black">
+                                                {userProfile.firstname} {userProfile.lastname}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </>
+                        ) : (
+                            <Link href="/login">
+                                <div className="flex items-center bg-white shadow-sm rounded-full px-3 py-1.5 space-x-3 hover:cursor-pointer hover:opacity-80 transition">
                                     <img
                                         src="/assets/defaultimg.jpg"
                                         alt="Default"
-                                        className="w-12 h-12 rounded-full object-cover"
+                                        className="w-11 h-11 rounded-full object-cover shadow-sm"
                                     />
+                                    <span className="font-semibold text-sm text-gray-900">Log In</span>
                                 </div>
-                                {/* Name + Badge */}
-                                <div>
-                                    <div className="font-bold text-gray-900">LogIn</div>
-                                </div>
-                            </div>
-                        </Link>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </header>

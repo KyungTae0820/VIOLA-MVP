@@ -18,17 +18,18 @@ const ProjectsSection = () => {
         {projects.map((project) => (
           <div
             key={project.id}
-            className="aspect-square rounded-lg overflow-hidden hover:opacity-80 transition-opacity cursor-pointer"
+            className="rounded-lg overflow-hidden hover:opacity-80 transition-opacity cursor-pointer flex justify-center"
           >
             <img
               src={project.image}
               alt={project.title}
-              className="w-full h-full object-cover"
+              className="w-[120px] h-[120px] object-cover rounded-md"
             />
           </div>
         ))}
       </div>
     </div>
+
   );
 };
 

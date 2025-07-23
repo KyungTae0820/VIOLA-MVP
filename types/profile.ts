@@ -4,9 +4,10 @@ export type Tag = {
 };
 
 export interface UserProfile {
-  id?: string; // uuid
-  username: string;
-  name: string;
+  id: string; // uuid
+  firstname: string;
+  lastname: string;
+  username?: string;
   bio?: string;
   phone?: string;
   email?: string;

@@ -11,7 +11,8 @@ const CompleteProfile = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const [form, setForm] = useState({
-    name: "",
+    firstname: "",
+    lastname: "",
     username: "",
     bio: "",
     phone: "",
@@ -64,10 +65,11 @@ const CompleteProfile = () => {
       imageUrl = data.publicUrl;
     }
 
-    const { error } = await supabase.from("profiles").insert([
+    const { error } = await supabase.from("profiles").upsert([
       {
         id: user.id,
-        name: form.name,
+        firstname: form.firstname,
+        lastname: form.lastname,
         username: form.username,
         bio: form.bio,
         phone: form.phone,
@@ -77,7 +79,11 @@ const CompleteProfile = () => {
         image: imageUrl,
         email: user.email,
       },
-    ]);
+    ],
+      {
+        onConflict: "id",
+      }
+    );
 
     if (error) {
       alert("Failed to save profile: " + error.message);
@@ -90,6 +96,7 @@ const CompleteProfile = () => {
     <div className="max-w-xl mx-auto px-4 py-8 space-y-6">
       <h1 className="text-3xl font-bold">Complete Your Profile</h1>
 
+      {/* Image Upload Section */}
       <div className="w-full h-48 border-dashed border-2 flex items-center justify-center rounded-lg cursor-pointer" onClick={() => document.getElementById("fileInput")?.click()}>
         {imagePreview ? (
           <img src={imagePreview} alt="preview" className="h-full object-cover rounded" />
@@ -105,7 +112,30 @@ const CompleteProfile = () => {
         />
       </div>
 
-      {["name", "username", "bio", "phone", "instagramUrl", "twitterUrl", "linkedinUrl"].map((field) => (
+      {/* Firstname + Lastname */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block mb-1">First Name</label>
+          <input
+            name="firstname"
+            value={form.firstname}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Last Name</label>
+          <input
+            name="lastname"
+            value={form.lastname}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+      </div>
+
+      {/* Other Fields */}
+      {["username", "bio", "phone", "instagramUrl", "twitterUrl", "linkedinUrl"].map((field) => (
         <div key={field}>
           <label className="block mb-1 capitalize">{field}</label>
           {field === "bio" ? (
