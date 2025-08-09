@@ -8,26 +8,53 @@ export interface Database {
         Row: {
           id: string;
           email: string;
-          name: string;
-          image_url: string;
-          instagram: string;
+          firstname: string;
+          lastname: string;
+          username?: string;
+          bio?: string;
+          phone?: string;
+          instagramUrl?: string;
+          twitterUrl?: string;
+          linkedinUrl?: string;
+          tag?: string;
+          image?: string;
+          onboarded: boolean;
           created_at: string;
         };
         Insert: {
           id: string;
           email: string;
-          name: string;
-          image_url: string;
-          instagram: string;
+          firstname: string;
+          lastname: string;
+          username?: string;
+          bio?: string;
+          phone?: string;
+          instagramUrl?: string;
+          twitterUrl?: string;
+          linkedinUrl?: string;
+          tag?: string;
+          image?: string;
+          onboarded?: boolean;
           created_at?: string;
         };
         Update: {
-          name?: string;
-          image_url?: string;
-          instagram?: string;
+          email?: string;
+          firstname?: string;
+          lastname?: string;
+          username?: string;
+          bio?: string;
+          phone?: string;
+          instagramUrl?: string;
+          twitterUrl?: string;
+          linkedinUrl?: string;
+          tag?: string;
+          image?: string;
+          onboarded?: boolean;
+          created_at?: string;
         };
       };
-      // Add more if i needed
+      // 추가 테이블 있으면 여기에 작성
     };
   };
 }
+

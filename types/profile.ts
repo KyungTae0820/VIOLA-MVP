@@ -4,18 +4,18 @@ export type Tag = {
 };
 
 export interface UserProfile {
-  id: string; // uuid
+  id: string;
+  image?: string;
   firstname: string;
   lastname: string;
-  username?: string;
+  username: string;
   bio?: string;
   phone?: string;
   email?: string;
-  tags?: Tag[];
   instagramUrl?: string;
   twitterUrl?: string;
   linkedinUrl?: string;
-  image?: string;
-  created_at?: string; // Supabase 
-  updated_at?: string; // if u are going to use
+  tag?: string;
+  created_at?: string;
+  onboarded?: boolean;
 }

@@ -40,6 +40,8 @@ const dashboard = () => {
 
     //Adding Project into DB and Frontend
     const addNewProject = async () => {
+        if (!userProfile) return; //No User? No Return
+
         if (newProjectType && modalValue.trim()) {
             const newProject: Omit<Project, "id"> = {
                 name: modalValue.trim(),
@@ -47,13 +49,16 @@ const dashboard = () => {
                 members: [],
                 progress: "0",
                 badgeColor: "bg-gray-200 text-gray-600",
-                image: "/assets/defaultimg.jpg",
+                image: userProfile.image || "/assets/defaultimg.jpg",
             };
 
             const { data, error } = await supabase
                 .from("projects")
-                .insert([newProject])
-                .select();
+                .insert([{
+                    ...newProject,
+                    user_id: userProfile.id,
+                }])
+                .select("*");
 
             if (error) {
                 console.error("Failed to add project:", error);
@@ -249,40 +254,23 @@ const dashboard = () => {
 
                     {/* Right Top Profile Card */}
                     <div className="flex items-center space-x-4">
-                        {/* Welcome Text */}
                         <p className="text-base italic font-light text-black">
-                            Welcome{userProfile ? ` ${userProfile.firstname}!` : "!"}
+                            Welcome {userProfile?.firstname}!
                         </p>
-                        {userProfile ? (
-                            <>
-                                {/* Profile Card */}
-                                <Link href={`/profile/${userProfile?.id}`}>
-                                    <div className="flex items-center bg-white shadow-sm rounded-full px-3 py-1.5 space-x-3 hover:cursor-pointer hover:opacity-80 transition">
-                                        <img
-                                            src={userProfile.image || "/assets/defaultimg.jpg"}
-                                            alt="Profile"
-                                            className="w-11 h-11 rounded-full object-cover shadow-sm"
-                                        />
-                                        <div className="flex flex-col justify-center">
-                                            <span className="text-sm font-semibold text-black">
-                                                {userProfile.firstname} {userProfile.lastname}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </>
-                        ) : (
-                            <Link href="/login">
-                                <div className="flex items-center bg-white shadow-sm rounded-full px-3 py-1.5 space-x-3 hover:cursor-pointer hover:opacity-80 transition">
-                                    <img
-                                        src="/assets/defaultimg.jpg"
-                                        alt="Default"
-                                        className="w-11 h-11 rounded-full object-cover shadow-sm"
-                                    />
-                                    <span className="font-semibold text-sm text-gray-900">Log In</span>
+                        <Link href={`/profile/${userProfile?.id}`}>
+                            <div className="flex items-center bg-white shadow-sm rounded-full px-3 py-1.5 space-x-3 hover:cursor-pointer hover:opacity-80 transition">
+                                <img
+                                    src={userProfile?.image || "/assets/defaultimg.jpg"}
+                                    alt="Profile"
+                                    className="w-11 h-11 rounded-full object-cover shadow-sm"
+                                />
+                                <div className="flex flex-col justify-center">
+                                    <span className="text-sm font-semibold text-black">
+                                        {userProfile?.firstname} {userProfile?.lastname}
+                                    </span>
                                 </div>
-                            </Link>
-                        )}
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </header>
@@ -301,13 +289,6 @@ const dashboard = () => {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="flex flex-col gap-1">
-                                    <div className="flex items-center space-x-3 min-h-[64px] hover:bg-gray-100 rounded-md p-1 cursor-pointer">
-                                        <Avatar>
-                                            <AvatarImage src="/assets/richbrian.jpg" />
-                                            <AvatarFallback>RB</AvatarFallback>
-                                        </Avatar>
-                                        <span className="font-medium">Rich Brian</span>
-                                    </div>
                                     <Link href="/dashboard/artists">
                                         <div className="flex items-center space-x-3 min-h-[64px] hover:bg-gray-100 rounded-md p-1 cursor-pointer">
                                             <Avatar>
@@ -317,20 +298,6 @@ const dashboard = () => {
                                             <span className="font-medium">Jackson Wang</span>
                                         </div>
                                     </Link>
-                                    <div className="flex items-center space-x-3 min-h-[64px] hover:bg-gray-100 rounded-md p-1 cursor-pointer">
-                                        <Avatar>
-                                            <AvatarImage src="/assets/niki.jpg" />
-                                            <AvatarFallback>N</AvatarFallback>
-                                        </Avatar>
-                                        <span className="font-medium">Niki</span>
-                                    </div>
-                                    <div className="flex items-center space-x-3 min-h-[64px] hover:bg-gray-100 rounded-md p-1 cursor-pointer">
-                                        <Avatar>
-                                            <AvatarImage src="" />
-                                            <AvatarFallback>HS</AvatarFallback>
-                                        </Avatar>
-                                        <span className="font-medium">Heon Seo</span>
-                                    </div>
                                 </CardContent>
                             </Card>
                         </div>
@@ -348,29 +315,7 @@ const dashboard = () => {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-3">
-                                    <div className="flex items-center space-x-3">
-                                        <Avatar className="h-10 w-10">
-                                            <AvatarImage src="/assets/bumzu.jpg" className="object-cover w-full h-full object-[80%_center]" />
-                                            <AvatarFallback>B</AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex-1">
-                                            <div className="font-medium">BUMZU</div>
-                                            <Badge className="text-xs bg-orange-100 text-orange-600">Artist</Badge>
-                                            <Badge className="text-xs bg-yellow-100 text-yellow-600 ml-1">Producer</Badge>
-                                        </div>
-                                        <div className="text-sm text-gray-400">Hey I think that...</div>
-                                    </div>
-                                    <div className="flex items-center space-x-3">
-                                        <Avatar className="h-10 w-10">
-                                            <AvatarImage src="" />
-                                            <AvatarFallback>AK</AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex-1">
-                                            <div className="font-medium">Ashley Kylro</div>
-                                            <Badge className="text-xs bg-orange-100 text-orange-600">Artist</Badge>
-                                        </div>
-                                        <div className="text-sm text-gray-400">Hey I think that...</div>
-                                    </div>
+                                    {/* adding card content */}
                                 </CardContent>
                             </Card>
                         </div>
@@ -450,54 +395,6 @@ const dashboard = () => {
 
                                 <CardContent>
                                     <div className="space-y-4">
-                                        {/* Static cards - example */}
-                                        {/* Avatar: Jackson Wang */}
-                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                            <div>
-                                                <div className="font-medium">Project Name</div>
-                                                <div className="text-sm text-gray-500">(Single)</div>
-                                            </div>
-                                            <div className="flex items-center space-x-2">
-                                                <Avatar className="h-10 w-10">
-                                                    <AvatarImage src="/assets/jacksonwang.jpg" />
-                                                    <AvatarFallback>JW</AvatarFallback>
-                                                </Avatar>
-                                                <Avatar className="h-10 w-10">
-                                                    <AvatarImage src="" />
-                                                    <AvatarFallback>HS</AvatarFallback>
-                                                </Avatar>
-                                                <CircularProgress progress={90} />
-                                            </div>
-                                        </div>
-                                        {/* Avatar: Rich Brian */}
-                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                            <div>
-                                                <div className="font-medium">Project Name</div>
-                                                <div className="text-sm text-gray-500">(Album)</div>
-                                            </div>
-                                            <div className="flex items-center space-x-2">
-                                                <Avatar className="h-10 w-10">
-                                                    <AvatarImage src="/assets/richbrian.jpg" />
-                                                    <AvatarFallback>RB</AvatarFallback>
-                                                </Avatar>
-                                                <CircularProgress progress={75} />
-                                            </div>
-                                        </div>
-                                        {/* Avatar: Niki */}
-                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                            <div>
-                                                <div className="font-medium">Project Name</div>
-                                                <div className="text-sm text-gray-500">(Song or Album)</div>
-                                            </div>
-                                            <div className="flex items-center space-x-2">
-                                                <Avatar className="h-10 w-10">
-                                                    <AvatarImage src="/assets/niki.jpg" />
-                                                    <AvatarFallback>N</AvatarFallback>
-                                                </Avatar>
-                                                <CircularProgress progress={80} />
-                                            </div>
-                                        </div>
-
                                         {/* Dynamic user-added projects */}
                                         {filteredProjects.map((project, index) => (
                                             <Link key={index} href={`/dashboard/projects/${project.id}`} className="block">
