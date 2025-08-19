@@ -12,6 +12,7 @@ import { Bell, ChevronDown, Search, Users, Calendar, Plus as PlusIcon } from 'lu
 import Link from "next/link"; //페이지 라우팅
 import { types, ProjectType, Project } from "@/types/project";
 import { UserProfile } from '@/types/profile';
+import { useAuth } from "@clerk/nextjs";
 
 const dashboard = () => {
     const [filter, setFilter] = useState("Category");
@@ -29,6 +30,7 @@ const dashboard = () => {
     const [deleteProjectIndex, setDeleteProjectIndex] = useState<number | null>(null);
     //Login
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+    const { userId, isLoaded } = useAuth();
 
     //Filtering project
     let filteredProjects: Project[] = [];
@@ -202,38 +204,29 @@ const dashboard = () => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            try {
-                const {
-                    data: { user },
-                    error: userError,
-                } = await supabase.auth.getUser();
-
-                if (userError || !user) {
-                    console.log("No active session or user:", userError?.message);
-                    setUserProfile(null);
-                    return;
-                }
-
-                const { data: profile, error: profileError } = await supabase
-                    .from("profiles")
-                    .select("*")
-                    .eq("id", user.id)
-                    .single();
-
-                if (profileError) {
-                    console.error("❌ Failed to fetch profile:", profileError.message);
-                    return;
-                }
-
-                setUserProfile(profile);
-            } catch (err: any) {
-                console.error("❌  Unexpected error:", err?.message || err);
+            if (!isLoaded) return;         
+            if (!userId) {            
+                setUserProfile(null);
+                return;
             }
+
+            const { data, error } = await supabase
+                .from("profiles")
+                .select("id, firstname, lastname, image") 
+                .eq("id", userId)                        
+                .maybeSingle();                          
+
+            if (error) {
+                console.error("❌ Failed to fetch profile:", error.message);
+                setUserProfile(null);
+                return;
+            }
+
+            setUserProfile(data as UserProfile | null);
         };
 
         fetchProfile();
-    }, []);
-
+    }, [userId, isLoaded]);
 
     //rendering 
     return (

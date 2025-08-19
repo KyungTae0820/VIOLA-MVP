@@ -17,7 +17,6 @@ const CompleteProfile = () => {
     image: "",
     firstname: "",
     lastname: "",
-    username: "",
     bio: "",
     phone: "",
     instagramUrl: "",
@@ -26,7 +25,7 @@ const CompleteProfile = () => {
     tag: "", // A&R, producer, artist 등
   });
 
-  // 1. 프로필 기존 데이터 불러오기
+  // 1. 기존 프로필 데이터 불러오기
   useEffect(() => {
     if (!userId) return;
 
@@ -47,7 +46,6 @@ const CompleteProfile = () => {
           image: data.image || "",
           firstname: data.firstname || "",
           lastname: data.lastname || "",
-          username: data.username || "",
           bio: data.bio || "",
           phone: data.phone || "",
           instagramUrl: data.instagramUrl || "",
@@ -65,7 +63,7 @@ const CompleteProfile = () => {
     fetchProfile();
   }, [userId]);
 
-  // 2. 기존 로그인/온보딩 체크(useAuth isLoaded, userId 체크는 login 페이지에서)
+  // 2. 로그인 및 인증 체크
   useEffect(() => {
     if (!isLoaded) return;
 
@@ -95,6 +93,11 @@ const CompleteProfile = () => {
 
   // 5. 폼 제출 핸들러
   const handleSubmit = async () => {
+    if (!form.firstname.trim() || !form.lastname.trim()) {
+      alert("First Name and Last Name are required.");
+      return;
+    }
+
     if (!userId || !user) {
       alert("User not found.");
       return;
@@ -102,46 +105,49 @@ const CompleteProfile = () => {
 
     let imageUrl = form.image || "";
 
+    // ✅ 여기서 기존 Supabase Storage 업로드 로직 대신 API 호출
     if (imageFile) {
-      const fileExtension = imageFile.name.split('.').pop();
-      const fileName = `${form.username}-${Date.now()}.${fileExtension}`;
-      const { error: uploadError } = await supabase.storage
-        .from("profileimages")
-        .upload(fileName, imageFile);
+      const ext = imageFile.name.split(".").pop() || "jpg";
+      const safeFirst = form.firstname.trim().replace(/\s+/g, "-");
+      const path = `${userId}/${Date.now()}-${safeFirst}.${ext}`;
 
-      if (uploadError) {
-        alert("Image upload failed: " + uploadError.message);
+      const fd = new FormData();
+      fd.append("file", imageFile);
+      fd.append("path", path);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: fd,
+        credentials: "include",
+      });
+
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert("Image upload failed: " + (json?.error || `HTTP ${res.status}`));
         return;
       }
-
-      const { data } = supabase.storage
-        .from("profileimages")
-        .getPublicUrl(fileName);
-
-      imageUrl = data.publicUrl;
+      imageUrl = json.url as string;
     }
 
+    // 이후 프로필 DB 업서트
     const { error } = await supabase.from("profiles").upsert(
       [
         {
           id: userId,
           firstname: form.firstname,
           lastname: form.lastname,
-          username: form.username,
           bio: form.bio,
           phone: form.phone,
-          instagramUrl: form.instagramUrl,
-          twitterUrl: form.twitterUrl,
-          linkedinUrl: form.linkedinUrl,
+          instagram_url: form.instagramUrl,
+          twitter_url: form.twitterUrl,
+          linkedin_url: form.linkedinUrl,
           image: imageUrl,
           email: user.primaryEmailAddress?.emailAddress || "",
           tag: form.tag || null,
           onboarded: true,
         },
       ],
-      {
-        onConflict: "id",
-      }
+      { onConflict: "id" }
     );
 
     if (error) {
@@ -150,14 +156,6 @@ const CompleteProfile = () => {
       router.push("/dashboard");
     }
   };
-
-  if (!isLoaded || !userId) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-400">Redirecting...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-xl mx-auto px-4 py-8 space-y-6">
@@ -189,33 +187,35 @@ const CompleteProfile = () => {
       {/* Name Fields */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block mb-1">First Name</label>
+          <label className="block mb-1">First Name *</label>
           <input
             name="firstname"
             value={form.firstname}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
+            required
           />
         </div>
         <div>
-          <label className="block mb-1">Last Name</label>
+          <label className="block mb-1">Last Name *</label>
           <input
             name="lastname"
             value={form.lastname}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
+            required
           />
         </div>
       </div>
 
       {/* Other Inputs */}
       {[
-        "username",
         "bio",
         "phone",
         "instagramUrl",
         "twitterUrl",
         "linkedinUrl",
+        "tag",
       ].map((field) => (
         <div key={field}>
           <label className="block mb-1 capitalize">{field}</label>
