@@ -6,7 +6,7 @@ interface HeroProps {
 
 const Hero = ({ onStartDemo }: HeroProps) => {
     return (
-        <section className="relative min-h-screen flex flex-col items-start justify-start bg-[linear-gradient(135deg,_#4C1D95_0%,_#7C3AED_40%,_#C084FC_70%,_#FCD34D_100%)] overflow-hidden pt-40">
+        <section className="relative min-h-screen flex flex-col items-start justify-start bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)] overflow-hidden pt-40">
             {/* Background decoration */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl"></div>
@@ -53,7 +53,7 @@ const Hero = ({ onStartDemo }: HeroProps) => {
                         />
                     </div>
                     <p className="text-xl md:text-1xl font-light mb-8 leading-relaxed max-w-2xl mx-auto">
-                        Trusted by Established Music Businesses
+                        Features Requested by Individuals of Music Businesses
                     </p>
                 </div>
             </div>

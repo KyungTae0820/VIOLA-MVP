@@ -6,23 +6,23 @@ const Features = () => {
             <div className="max-w-6xl mx-auto">
                 {/* Section title */}
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Your Producer Toolbox</h2>
+                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Your Music Scouting Toolbox</h2>
                     <p className="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        A coherent toolbox of quality music industry features to help you manage creative projects,
-                        collaborate better with your teammates, and build an extensive network.
+                        A coherent and collaborative toolbox of quality music industry features to help you scout new talent, review demos, 
+                        initiate artist signings, and manage creative projects.
                     </p>
                 </div>
 
                 {/* ROW 1 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
                     <div className="text-2xl md:text-2xl font-light mb-6">
-                        Effortlessly manage your artists’ projects with our intuitive project management work-board.
-                        Organize tracks, provide feedback, and compare versions and stems, all through effective collaboration.
+                        Effortlessly review demos of prospective artists with our intuitive content swiping system.
+                        Swipe through demos, provide feedback, and compare versions, all through effective collaboration.
                     </div>
 
                     <div>
                         <div className="text-md font-bold text-gray-800 mb-3 text-center md:text-right">
-                            Production Management
+                            Review Demos 
                         </div>
                         <Card className="border border-gray-200">
                             <CardContent className="p-0">

@@ -15,7 +15,7 @@ export interface UserProfile {
   instagramUrl?: string;
   twitterUrl?: string;
   linkedinUrl?: string;
-  tag?: string;
+  tags?: string;
   created_at?: string;
   onboarded?: boolean;
 }

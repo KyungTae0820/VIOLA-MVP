@@ -1,10 +1,44 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabaseClient';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge, Button, Card } from "@/components/ui";
 import { Edit, Phone, Mail, ChevronRight } from "lucide-react";
 import { FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { UserProfile } from "@/types/profile";
 
+const BUCKET = 'profileimages';
+
+async function getLatestSignedUrl(userId: string) {
+  // 1) 해당 유저 폴더에서 최신 파일
+  const { data: files, error } = await supabase
+    .storage
+    .from(BUCKET)
+    .list(userId, { limit: 1, sortBy: { column: 'updated_at', order: 'desc' } });
+
+  if (error || !files?.length) return undefined;
+
+  const path = `${userId}/${files[0].name}`;
+
+  // 2) 사인드 URL(24h) 우선
+  const { data: signed, error: signErr } = await supabase
+    .storage
+    .from(BUCKET)
+    .createSignedUrl(path, 60 * 60 * 24);
+
+  if (!signErr && signed?.signedUrl) {
+    // 캐시 무효화 쿼리
+    return `${signed.signedUrl}${signed.signedUrl.includes('?') ? '&' : '?'}v=${Date.now()}`;
+  }
+
+  // 3) public 버킷일 경우 폴백
+  const publicUrl = supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+  return publicUrl ? `${publicUrl}?v=${Date.now()}` : undefined;
+}
+
 const ProfileCard = ({
+  id,                 // ✅ Clerk userId (폴더명으로 사용)
   firstname,
   lastname,
   username,
@@ -15,10 +49,27 @@ const ProfileCard = ({
   instagramUrl,
   twitterUrl,
   linkedinUrl,
-  image,
+  image,              // 부모가 이미 URL을 넘기면 우선 사용
 }: UserProfile) => {
   const fullName = `${firstname} ${lastname}`;
   const fallbackChar = firstname?.charAt(0) ?? "U";
+
+  // 부모가 준 image 우선, 없으면 스토리지에서 로딩
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(image ?? undefined);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      if (image) return;   // 이미 부모가 제공하면 그대로 사용
+      if (!id) return;     // id 없으면 스킵
+
+      const url = await getLatestSignedUrl(id);
+      if (alive) setAvatarUrl(url ?? '/assets/defaultimg.jpg');
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [id, image]);
 
   const teamMembers = [
     { id: 1, image: "/assets/defaultimg.jpg", name: "Team Member 1" },
@@ -38,7 +89,12 @@ const ProfileCard = ({
       {/* Left Column - Profile Image */}
       <div className="flex justify-center lg:justify-start">
         <Avatar className="h-64 w-64">
-          <AvatarImage src={image || "/assets/defaultimg.jpg"} alt={fullName} className="object-cover" />
+          <AvatarImage
+            src={avatarUrl || "/assets/defaultimg.jpg"}
+            alt={fullName}
+            className="object-cover"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/assets/defaultimg.jpg"; }}
+          />
           <AvatarFallback className="text-4xl">{fallbackChar}</AvatarFallback>
         </Avatar>
       </div>
@@ -49,12 +105,8 @@ const ProfileCard = ({
           <div className="flex flex-col">
             <h2 className="text-3xl font-bold text-foreground">{fullName}</h2>
             <div className="flex items-center gap-2 mt-1">
-              {tags?.[0] && (
-                <Badge variant={tags[0].variant}>{tags[0].label}</Badge>
-              )}
-              {username && (
-                <p className="text-profile-text-muted text-sm">@{username}</p>
-              )}
+              {tags?.[0] && <Badge variant={tags[0].variant}>{tags[0].label}</Badge>}
+              {username && <p className="text-profile-text-muted text-sm">@{username}</p>}
             </div>
           </div>
           {bio && <p className="text-sm text-foreground mt-2">{bio}</p>}
@@ -79,19 +131,11 @@ const ProfileCard = ({
         {/* Tags */}
         <Card className="p-4 space-y-2">
           <h3 className="font-medium text-foreground mb-3">Tags</h3>
-          <div className="flex flex-wrap gap-2">
-            {tags?.map((tag, index) => (
-              <Badge key={index} variant={tag.variant}>
-                {tag.label}
-              </Badge>
-            ))}
-          </div>
         </Card>
       </div>
 
       {/* Right Column - Contact & Actions */}
       <div className="space-y-6">
-        {/* Edit Button */}
         <div className="flex justify-end">
           <Button variant="profile" size="sm" className="gap-2">
             <Edit className="h-4 w-4" />
@@ -99,7 +143,6 @@ const ProfileCard = ({
           </Button>
         </div>
 
-        {/* Social Icons */}
         <div className="flex space-x-3 mb-2">
           {instagramUrl && (
             <a href={instagramUrl} target="_blank" rel="noopener noreferrer"
@@ -121,7 +164,6 @@ const ProfileCard = ({
           )}
         </div>
 
-        {/* Contact Info */}
         <div className="space-y-4">
           {phone && (
             <div className="flex items-center gap-3 text-sm">

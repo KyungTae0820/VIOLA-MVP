@@ -202,30 +202,58 @@ const dashboard = () => {
 
     const isModalActive = showModal && modalMode === "add";
 
+    const BUCKET = 'profileimages';
+
+    // 최신 파일 경로 찾기
+    async function findLatestAvatarPath(userId: string) {
+        const folder = userId; // 예: user_31WhkFNDWJD6tfd1A6yM1cJzxu5
+        const { data, error } = await supabase.storage.from(BUCKET).list(folder, {
+            limit: 50,
+            sortBy: { column: 'updated_at', order: 'desc' },
+        });
+        if (error || !data?.length) return undefined;
+        return `${folder}/${data[0].name}`;
+    }
+
+    // 항상 사인드 URL로 생성 (24시간 유효)
+    async function getAvatarSignedUrl(path?: string | null, ttlSec = 60 * 60 * 24) {
+        if (!path) return undefined;
+        const { data, error } = await supabase.storage
+            .from(BUCKET)
+            .createSignedUrl(path, ttlSec);
+        if (error) return undefined;
+        // 캐시 무효화 쿼리 추가(이미지 교체 즉시 반영)
+        return `${data.signedUrl}${data.signedUrl.includes('?') ? '&' : '?'}v=${Date.now()}`;
+    }
+
     useEffect(() => {
-        const fetchProfile = async () => {
-            if (!isLoaded) return;         
-            if (!userId) {            
+        (async () => {
+            if (!isLoaded) return;
+            if (!userId) { setUserProfile(null); return; }
+
+            // 1) 텍스트 프로필
+            const { data: profileRow, error: profileErr } = await supabase
+                .from('profiles')
+                .select('id, firstname, lastname')
+                .eq('id', userId)
+                .maybeSingle();
+
+            if (profileErr || !profileRow) {
                 setUserProfile(null);
                 return;
             }
 
-            const { data, error } = await supabase
-                .from("profiles")
-                .select("id, firstname, lastname, image") 
-                .eq("id", userId)                        
-                .maybeSingle();                          
+            // 2) 스토리지에서 최신 이미지 경로
+            const latestPath = await findLatestAvatarPath(userId);
 
-            if (error) {
-                console.error("❌ Failed to fetch profile:", error.message);
-                setUserProfile(null);
-                return;
-            }
+            // 3) 항상 사인드 URL 사용
+            const imageUrl = await getAvatarSignedUrl(latestPath);
 
-            setUserProfile(data as UserProfile | null);
-        };
-
-        fetchProfile();
+            setUserProfile({
+                ...(profileRow as UserProfile),
+                image: imageUrl ?? '/assets/defaultimg.jpg',
+            });
+        })();
     }, [userId, isLoaded]);
 
     //rendering 
@@ -237,11 +265,11 @@ const dashboard = () => {
                     <div className="flex items-center space-x-4">
                         <div className="flex items-center space-x-2">
                             <span className="text-4xl font-bold">VIOLA.</span>
-                            <img
-                                src="/assets/88rising.jpg"
-                                alt="88rising"
+                            {/* <img
+                                src="" //나중에 회사 생기면 따로 넣어야함.
+                                alt=""
                                 className="h-16 w-16 ml-2 object-cover rounded-full border-none"
-                            />
+                            /> */}
                         </div>
                     </div>
 
@@ -256,6 +284,7 @@ const dashboard = () => {
                                     src={userProfile?.image || "/assets/defaultimg.jpg"}
                                     alt="Profile"
                                     className="w-11 h-11 rounded-full object-cover shadow-sm"
+                                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/assets/defaultimg.jpg"; }}
                                 />
                                 <div className="flex flex-col justify-center">
                                     <span className="text-sm font-semibold text-black">
