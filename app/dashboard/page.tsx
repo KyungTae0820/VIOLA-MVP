@@ -324,24 +324,6 @@ const dashboard = () => {
                             </Card>
                         </div>
 
-                        {/* Notifications */}
-                        <div className="w-full xl:w-1/3">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center justify-between">
-                                        <div className="flex items-center space-x-2">
-                                            <Bell className="h-5 w-5" />
-                                            <span>Notifications</span>
-                                        </div>
-                                        <Badge className="text-white bg-red-500 px-2 py-0.5 rounded-full text-xs min-w-[20px] text-center leading-none">4</Badge>
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="space-y-3">
-                                    {/* adding card content */}
-                                </CardContent>
-                            </Card>
-                        </div>
-
                         {/* Recent Projects */}
                         <div className="w-full xl:w-1/3">
                             <Card>
@@ -351,7 +333,7 @@ const dashboard = () => {
                                         <div className="flex items-center gap-2 flex-wrap">
                                             <div className="text-lg font-semibold flex items-center gap-2">
                                                 <Calendar className="h-5 w-5" />
-                                                <span>Recent Projects</span>
+                                                <span>Demo Submissions</span>
                                             </div>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
