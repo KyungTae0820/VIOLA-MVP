@@ -138,9 +138,9 @@ const CompleteProfile = () => {
           lastname: form.lastname,
           bio: form.bio,
           phone: form.phone,
-          instagram_url: form.instagramUrl,
-          twitter_url: form.twitterUrl,
-          linkedin_url: form.linkedinUrl,
+          instagramUrl: form.instagramUrl,
+          twitterUrl: form.twitterUrl,
+          linkedinUrl: form.linkedinUrl,
           image: imageUrl,
           email: user.primaryEmailAddress?.emailAddress || "",
           tag: form.tag || null,
@@ -232,6 +232,15 @@ const CompleteProfile = () => {
               value={form[field as keyof typeof form]}
               onChange={handleChange}
               className="w-full border px-3 py-2 rounded"
+              placeholder={
+                field === "instagramUrl"
+                  ? "Enter full URL (e.g. https://www.instagram.com/(your-id))"
+                  : field === "twitterUrl"
+                    ? "Enter full URL (e.g. https://twitter.com/(your-id))"
+                    : field === "linkedinUrl"
+                      ? "Enter full URL (e.g. https://www.linkedin.com/in/(your-id))"
+                      : ""
+              }
             />
           )}
         </div>

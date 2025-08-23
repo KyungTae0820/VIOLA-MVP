@@ -9,36 +9,65 @@ import { FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { UserProfile } from "@/types/profile";
 
 const BUCKET = 'profileimages';
+const DEFAULT_AVATAR = '/assets/defaultimg.jpg';
+
+function isFullUrl(str?: string) {
+  if (!str) return false;
+  try { const u = new URL(str); return u.protocol === 'http:' || u.protocol === 'https:'; }
+  catch { return false; }
+}
+
+function isSupabaseStorageUrl(url: string) {
+  try {
+    const u = new URL(url);
+    return u.hostname.endsWith('.supabase.co') || u.hostname.endsWith('.supabase.in');
+  } catch { return false; }
+}
+
+function urlToStoragePath(url: string) {
+  try {
+    const u = new URL(url);
+    const idx = u.pathname.indexOf('/storage/v1/object/');
+    if (idx === -1) return null;
+
+    const after = u.pathname.slice(idx + '/storage/v1/object/'.length);
+    const cleaned = after.replace(/^public\//, '').replace(/^sign\//, '');
+    const bucketPrefix = `${BUCKET}/`;
+
+    if (!cleaned.startsWith(bucketPrefix)) return null;
+    return decodeURIComponent(cleaned.slice(bucketPrefix.length));
+  } catch {
+    return null;
+  }
+}
+
+async function pathToUrl(path: string, ttlSec = 60 * 60 * 24) {
+  const { data: signed, error: signErr } = await supabase
+    .storage
+    .from(BUCKET)
+    .createSignedUrl(path, ttlSec);
+
+  if (!signErr && signed?.signedUrl) {
+    return `${signed.signedUrl}${signed.signedUrl.includes('?') ? '&' : '?'}v=${Date.now()}`;
+  }
+
+  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+  return data?.publicUrl ? `${data.publicUrl}?v=${Date.now()}` : undefined;
+}
 
 async function getLatestSignedUrl(userId: string) {
-  // 1) 해당 유저 폴더에서 최신 파일
   const { data: files, error } = await supabase
     .storage
     .from(BUCKET)
     .list(userId, { limit: 1, sortBy: { column: 'updated_at', order: 'desc' } });
 
   if (error || !files?.length) return undefined;
-
   const path = `${userId}/${files[0].name}`;
-
-  // 2) 사인드 URL(24h) 우선
-  const { data: signed, error: signErr } = await supabase
-    .storage
-    .from(BUCKET)
-    .createSignedUrl(path, 60 * 60 * 24);
-
-  if (!signErr && signed?.signedUrl) {
-    // 캐시 무효화 쿼리
-    return `${signed.signedUrl}${signed.signedUrl.includes('?') ? '&' : '?'}v=${Date.now()}`;
-  }
-
-  // 3) public 버킷일 경우 폴백
-  const publicUrl = supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
-  return publicUrl ? `${publicUrl}?v=${Date.now()}` : undefined;
+  return pathToUrl(path);
 }
 
 const ProfileCard = ({
-  id,                 // ✅ Clerk userId (폴더명으로 사용)
+  id,
   firstname,
   lastname,
   username,
@@ -49,32 +78,50 @@ const ProfileCard = ({
   instagramUrl,
   twitterUrl,
   linkedinUrl,
-  image,              // 부모가 이미 URL을 넘기면 우선 사용
+  image,
 }: UserProfile) => {
   const fullName = `${firstname} ${lastname}`;
   const fallbackChar = firstname?.charAt(0) ?? "U";
 
-  // 부모가 준 image 우선, 없으면 스토리지에서 로딩
-  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(image ?? undefined);
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     let alive = true;
     (async () => {
-      if (image) return;   // 이미 부모가 제공하면 그대로 사용
-      if (!id) return;     // id 없으면 스킵
+      if (isFullUrl(image) && isSupabaseStorageUrl(image!)) {
+        const path = urlToStoragePath(image!);
+        const url = path ? await pathToUrl(path) : undefined;
+        if (alive) setAvatarUrl(url ?? DEFAULT_AVATAR);
+        return;
+      }
 
-      const url = await getLatestSignedUrl(id);
-      if (alive) setAvatarUrl(url ?? '/assets/defaultimg.jpg');
+      if (isFullUrl(image)) {
+        if (alive) setAvatarUrl(image!);
+        return;
+      }
+
+      if (image && id) {
+        const path = image.startsWith(`${id}/`) ? image : `${id}/${image}`;
+        const url = await pathToUrl(path);
+        if (alive) setAvatarUrl(url ?? DEFAULT_AVATAR);
+        return;
+      }
+
+      if (id) {
+        const url = await getLatestSignedUrl(id);
+        if (alive) setAvatarUrl(url ?? DEFAULT_AVATAR);
+        return;
+      }
+
+      if (alive) setAvatarUrl(DEFAULT_AVATAR);
     })();
-    return () => {
-      alive = false;
-    };
+    return () => { alive = false; };
   }, [id, image]);
 
   const teamMembers = [
-    { id: 1, image: "/assets/defaultimg.jpg", name: "Team Member 1" },
-    { id: 2, image: "/assets/defaultimg.jpg", name: "Team Member 2" },
-    { id: 3, image: "/assets/defaultimg.jpg", name: "Team Member 3" },
+    { id: 1, image: DEFAULT_AVATAR, name: "Team Member 1" },
+    { id: 2, image: DEFAULT_AVATAR, name: "Team Member 2" },
+    { id: 3, image: DEFAULT_AVATAR, name: "Team Member 3" },
   ];
 
   return (
@@ -90,10 +137,10 @@ const ProfileCard = ({
       <div className="flex justify-center lg:justify-start">
         <Avatar className="h-64 w-64">
           <AvatarImage
-            src={avatarUrl || "/assets/defaultimg.jpg"}
+            src={avatarUrl || DEFAULT_AVATAR}
             alt={fullName}
             className="object-cover"
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = "/assets/defaultimg.jpg"; }}
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = DEFAULT_AVATAR; }}
           />
           <AvatarFallback className="text-4xl">{fallbackChar}</AvatarFallback>
         </Avatar>
@@ -143,6 +190,21 @@ const ProfileCard = ({
           </Button>
         </div>
 
+        <div className="space-y-4">
+          {phone && (
+            <div className="flex items-center gap-3 text-sm">
+              <Phone className="h-4 w-4 text-profile-text-muted" />
+              <span className="text-foreground">{phone}</span>
+            </div>
+          )}
+          {email && (
+            <div className="flex items-center gap-3 text-sm">
+              <Mail className="h-4 w-4 text-profile-text-muted" />
+              <span className="text-foreground">{email}</span>
+            </div>
+          )}
+        </div>
+
         <div className="flex space-x-3 mb-2">
           {instagramUrl && (
             <a href={instagramUrl} target="_blank" rel="noopener noreferrer"
@@ -161,21 +223,6 @@ const ProfileCard = ({
               className="bg-white rounded-full p-3 shadow-md hover:bg-gray-100 transition">
               <FaLinkedin className="text-xl text-black" />
             </a>
-          )}
-        </div>
-
-        <div className="space-y-4">
-          {phone && (
-            <div className="flex items-center gap-3 text-sm">
-              <Phone className="h-4 w-4 text-profile-text-muted" />
-              <span className="text-foreground">{phone}</span>
-            </div>
-          )}
-          {email && (
-            <div className="flex items-center gap-3 text-sm">
-              <Mail className="h-4 w-4 text-profile-text-muted" />
-              <span className="text-foreground">{email}</span>
-            </div>
           )}
         </div>
       </div>
