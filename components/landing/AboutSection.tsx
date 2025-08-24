@@ -11,7 +11,7 @@ const AboutSection = () => {
                         </h2>
                         <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                             <p>
-                                Viola.co is more than just a project management platform—it's a comprehensive
+                                Viola.co is more than just a project management platform—it&apos;s a comprehensive
                                 ecosystem designed specifically for the creative industry. We understand the unique
                                 challenges artists face when collaborating across different time zones, managing
                                 multiple projects, and maintaining professional relationships.

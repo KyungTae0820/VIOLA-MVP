@@ -10,7 +10,7 @@ import Link from "next/link"; //페이지 라우팅
 import { UserProfile } from '@/types/profile';
 import { useAuth } from "@clerk/nextjs";
 
-const dashboard = () => {
+const Dashboard = () => {
     //Login
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const { userId, isLoaded } = useAuth();
@@ -227,4 +227,4 @@ const dashboard = () => {
     );
 };
 
-export default dashboard;
+export default Dashboard;

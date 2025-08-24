@@ -118,7 +118,7 @@ export default function DemoSubmissionForm() {
 
         toast({
             title: "Demo submitted successfully!",
-            description: "We'll review your submission and get back to you soon.",
+            description: "We&apos;ll review your submission and get back to you soon.",
         });
 
         // 폼 리셋
