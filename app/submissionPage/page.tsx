@@ -118,7 +118,7 @@ export default function DemoSubmissionForm() {
 
         toast({
             title: "Demo submitted successfully!",
-            description: "We&apos;ll review your submission and get back to you soon.",
+            description: "We'll review your submission and get back to you soon.",
         });
 
         // 폼 리셋
@@ -151,7 +151,7 @@ export default function DemoSubmissionForm() {
 
                     <h1 className="text-4xl font-bold mb-1">Submit Your Demo</h1>
                     <p className="text-muted-foreground text-md">
-                        Share your music with us. We're looking for the next big talent.
+                        Share your music with us. We&apos;re looking for the next big talent.
                     </p>
                 </div>
 
