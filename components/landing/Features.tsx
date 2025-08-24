@@ -6,10 +6,10 @@ const Features = () => {
             <div className="max-w-6xl mx-auto">
                 {/* Section title */}
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Your Music Scouting Toolbox</h2>
+                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Your All-In-One A&R Toolkit</h2>
                     <p className="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        A coherent and collaborative toolbox of quality music industry features to help you scout new talent, review demos, 
-                        initiate artist signings, and manage creative projects.
+                        From first listen to final contract. Use VIOLA to streamline
+                        demo submissions to scouting, all the way to signing your next big artist.
                     </p>
                 </div>
 
@@ -22,7 +22,7 @@ const Features = () => {
 
                     <div>
                         <div className="text-md font-bold text-gray-800 mb-3 text-center md:text-right">
-                            Review Demos 
+                            Review Demos
                         </div>
                         <Card className="border border-gray-200">
                             <CardContent className="p-0">

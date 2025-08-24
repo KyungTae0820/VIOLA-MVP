@@ -13,27 +13,27 @@ const Hero = ({ onStartDemo }: HeroProps) => {
                 <div className="absolute bottom-20 right-20 w-96 h-96 bg-white rounded-full blur-3xl"></div>
             </div>
 
-            {/* Top-left brand */}
             <div className="absolute top-6 left-6 z-20 text-white">
                 <h1 className="text-3xl md:text-4xl font-bold tracking-tight">VIOLA.</h1>
                 <div className="mt-1 h-0.5 w-27 bg-white/80"></div>
             </div>
+
 
             {/* Center content (title removed) */}
             <div className="absolute top-10 left-1/2 -translate-x-1/2 z-10 text-center text-white px-6 w-full max-w-4xl">
                 <div className="mb-8">
                     {/* removed big h1 + underline */}
                     <p className="text-xl md:text-6xl font-semibold mb-6 leading-tight max-w-2xl mx-auto">
-                        Your Harmonious Hub of
-                        Music Collaboration
+                        Only Listen to Bangers.
                     </p>
                 </div>
 
                 <div className="space-y-6">
                     <h2 className="text-2xl md:text-2xl font-light mb-6">
-                        Harmoniously streamline the workflow and management of your music projects through
-                        our tailored project management and collaboration tools, meant specifically for the music industry .
+                        You deserve better than inbox chaos. Get 20 brand-consistent tracks in minutes without having to go through 300 demos.
+                        No auto-rejects. Just prioritized contenders trained on your catalog.
                     </h2>
+
                     <Button
                         onClick={onStartDemo}
                         size="lg"
@@ -41,6 +41,11 @@ const Hero = ({ onStartDemo }: HeroProps) => {
                     >
                         Join the Waitlist
                     </Button>
+
+                    <div className="text-md opacity-75">
+                        <p>$39/mo or $239/yr. Cancel Anytime.</p>
+                    </div>
+
                     {/* Video / Animation */}
                     <div className="mt-4 mx-auto w-full max-w-md relative aspect-video rounded-2xl overflow-hidden shadow-xl ring-1 ring-white/20 z-10">
                         <iframe
@@ -53,7 +58,7 @@ const Hero = ({ onStartDemo }: HeroProps) => {
                         />
                     </div>
                     <p className="text-xl md:text-1xl font-light mb-8 leading-relaxed max-w-2xl mx-auto">
-                        Features Requested by Individuals of Music Businesses
+                        Built For Visionaries. Trusted by Established Indie Labels
                     </p>
                 </div>
             </div>
@@ -64,7 +69,7 @@ const Hero = ({ onStartDemo }: HeroProps) => {
                 <div className="viola-marquee">
                     {/* track content (길게 반복) */}
                     <div className="viola-track">
-                        {Array(2) // 두 번 반복
+                        {Array(2)
                             .fill([
                                 "Company A",
                                 "Company B",
