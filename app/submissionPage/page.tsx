@@ -26,7 +26,7 @@ const genres = [
 ];
 
 const companies = [
-    "88rising", "H1ghr Music", "88rsigng", "SM Entertainment", "Other"
+    "88rising", "H1ghr Music", "SM Entertainment", "Other"
 ];
 
 export default function DemoSubmissionForm() {
