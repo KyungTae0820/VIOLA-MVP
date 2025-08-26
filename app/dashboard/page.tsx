@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui";
 import { Users, Calendar, Workflow } from 'lucide-react';
 import Link from "next/link"; //페이지 라우팅
 import { UserProfile } from '@/types/profile';
@@ -96,6 +96,9 @@ const Dashboard = () => {
                                     <span className="text-sm font-semibold text-black">
                                         {userProfile?.firstname} {userProfile?.lastname}
                                     </span>
+                                    <div className="flex items-center gap-0 -ml-1">
+                                        <Badge variant="ar" className="px-2 py-0.5 text-xs rounded-full">A&amp;R</Badge>
+                                    </div>
                                 </div>
                             </div>
                         </Link>

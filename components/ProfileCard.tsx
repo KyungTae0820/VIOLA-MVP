@@ -149,12 +149,20 @@ const ProfileCard = ({
       {/* Middle Column - Profile Info */}
       <div className="space-y-6">
         <div className="space-y-2">
-          <div className="flex flex-col">
+          <div className="flex items-center justify-between w-full">
             <h2 className="text-3xl font-bold text-foreground">{fullName}</h2>
-            <div className="flex items-center gap-2 mt-1">
-              {tags?.[0] && <Badge variant={tags[0].variant}>{tags[0].label}</Badge>}
-              {username && <p className="text-profile-text-muted text-sm">@{username}</p>}
-            </div>
+            <Button
+              variant="profile"
+              size="sm"
+              className="gap-2 shrink-0 lg:hidden"
+            >
+              <Edit className="h-4 w-4" />
+              Edit Profile
+            </Button>
+          </div>
+          <div className="flex items-center gap-2 mt-1">
+            {/* {tags?.[0] && <Badge variant={tags[0].variant}>{tags[0].label}</Badge>} */}
+            {username && <p className="text-profile-text-muted text-sm">@{username}</p>}
           </div>
           {bio && <p className="text-sm text-foreground mt-2">{bio}</p>}
         </div>
@@ -178,12 +186,15 @@ const ProfileCard = ({
         {/* Tags */}
         <Card className="p-4 space-y-2">
           <h3 className="font-medium text-foreground mb-3">Tags</h3>
+          <Badge variant="ar" className="px-4 py-1.5 text-sm rounded-full shadow-sm">
+            A&amp;R
+          </Badge>
         </Card>
       </div>
 
       {/* Right Column - Contact & Actions */}
       <div className="space-y-6">
-        <div className="flex justify-end">
+        <div className="hidden lg:flex justify-end">
           <Button variant="profile" size="sm" className="gap-2">
             <Edit className="h-4 w-4" />
             Edit Profile
