@@ -10,10 +10,6 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: { default: "VIOLA", template: "%s · VIOLA" },
   description: "VIOLA — A&R platform",
-  icons: {
-    icon: [{ url: "/violaicon.png", type: "image/png" }],
-    apple: [{ url: "/violaicon.png", type: "image/png" }], 
-  },
 };
 
 interface RootLayoutProps {
