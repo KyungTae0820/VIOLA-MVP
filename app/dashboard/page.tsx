@@ -107,8 +107,8 @@ const Dashboard = () => {
                 {/* Main Content */}
                 <main className="flex-1 bg-gray-50 px-4 md:px-6 py-4 md:py-6 overflow-x-hidden">
                     <div className="w-full mx-auto">
-                        {/* Your Artists */}
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                            {/* Your Artists */}
                             <Card className="h-full">
                                 <CardHeader className="pb-3">
                                     <CardTitle className="flex items-center space-x-3">
@@ -116,22 +116,25 @@ const Dashboard = () => {
                                         <span>Your Artists</span>
                                     </CardTitle>
                                 </CardHeader>
-                                <CardContent className="flex flex-col gap-2">
-                                    <Link href="/dashboard/artists" className="block">
-                                        <div
-                                            className="flex items-center gap-3 min-h-[50px]
-                                            rounded-lg border border-neutral-200/80 bg-white/60
-                                            px-3 py-2 shadow-sm
-                                            hover:bg-neutral-50 hover:border-violet-300 transition-colors
-                                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"
-                                        >
-                                            <Avatar className="h-10 w-10">
-                                                <AvatarImage src="/assets/jacksonwang.jpg" />
-                                                <AvatarFallback>JW</AvatarFallback>
-                                            </Avatar>
-                                            <span className="font-medium text-neutral-800">Jackson Wang</span>
-                                        </div>
-                                    </Link>
+                                <CardContent className="relative p-6 overflow-hidden">
+                                    <div className="min-h-[clamp(240px,22vw,300px)]" />
+                                    <div className="absolute inset-4 md:inset-6 flex flex-col gap-2">
+                                        <Link href="/dashboard/artists" className="block">
+                                            <div
+                                                className="flex items-center gap-3 min-h-[50px]
+                                                rounded-lg border border-neutral-200/80 bg-white/60
+                                                px-3 py-2 shadow-sm
+                                                hover:bg-neutral-50 hover:border-violet-300 transition-colors
+                                                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"
+                                            >
+                                                <Avatar className="h-10 w-10">
+                                                    <AvatarImage src="/assets/jacksonwang.jpg" />
+                                                    <AvatarFallback>JW</AvatarFallback>
+                                                </Avatar>
+                                                <span className="font-medium text-neutral-800">Jackson Wang</span>
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </CardContent>
                             </Card>
 
@@ -148,23 +151,20 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </CardHeader>
-                                <CardContent className="p-4 md:p-6">
-                                    {/* 나중에 링크 넣어야함. A&R 대시보드 만들어서 */}
-                                    {/* <Link href="/submissionPage" className="block"> */}
-                                    <button
-                                        className="w-full aspect-[16/9] md:aspect-[9.3/6] rounded-xl
-                                                    bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)]
-                                                    text-white font-semibold tracking-wide
-                                                    shadow-lg hover:shadow-xl hover:brightness-105
-                                                    transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400
-                                                    flex items-center justify-center"
-                                        type="button"
+                                <CardContent className="relative p-6 overflow-hidden">
+                                    <div className="min-h-[clamp(240px,22vw,300px)]" />
+                                    <div
+                                        className="absolute inset-4 md:inset-6 rounded-xl overflow-hidden
+                                        flex items-center justify-center
+                                        bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)]
+                                        text-white font-semibold tracking-wide
+                                        ring-1 ring-neutral-300/70 shadow-md
+                                        transition-all duration-200 hover:shadow-xl hover:brightness-105"
                                     >
                                         <span className="whitespace-nowrap text-lg md:text-2xl lg:text-3xl font-semibold leading-none">
                                             Go to A&R Dashboard
                                         </span>
-                                    </button>
-                                    {/* </Link> */}
+                                    </div>
                                 </CardContent>
                             </Card>
 
@@ -181,19 +181,15 @@ const Dashboard = () => {
                                     </div>
                                 </CardHeader>
                                 <CardContent className="relative p-6 overflow-hidden">
-                                    <div className="min-h-[360px]" />
-
+                                    <div className="min-h-[clamp(240px,22vw,300px)]" />
                                     <div className="absolute inset-4 md:inset-6 rounded-xl overflow-hidden
-                  flex items-center justify-center ring-1 ring-neutral-300/70 shadow-md pointer-events-none">
-                                        {/* 1) 색 보존: grayscale 제거, 블러만 강하게 */}
+                                        flex items-center justify-center ring-1 ring-neutral-300/70 shadow-md pointer-events-none">
                                         <div
                                             aria-hidden
                                             className="absolute inset-0 bg-center bg-cover blur-[30px] scale-110"
                                             style={{ backgroundImage: "url('/assets/project.jpg')" }}
                                         />
-                                        {/* 2) 회색 안개: 너무 색 죽이지 않도록 중립(흰색에 가까운) 투명도 */}
                                         <div aria-hidden className="absolute inset-0 bg-white/5 mix-blend-screen" />
-
                                         <span className="relative z-10 text-sm font-semibold text-neutral-700">
                                             Unavailable now
                                         </span>
@@ -203,9 +199,9 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    {/* 웹페이지 밑 비올라 로고 */}
-                    <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen mt-6 select-none">
-                        <div className="relative h-[220px] md:h-[340px]">
+                    {/* viola logo */}
+                    <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen mt-4 select-none">
+                        <div className="relative h-[200px] md:h-[300px]">
                             <div className="absolute inset-0 bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)]" />
                             <div className="absolute inset-0 opacity-50
                                 bg-[radial-gradient(1200px_400px_at_80%_120%,rgba(255,255,255,0.5),transparent)]" />
