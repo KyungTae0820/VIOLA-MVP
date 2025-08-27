@@ -1,6 +1,11 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { Card, CardContent } from "@/components/ui/card";
 
 const Features = () => {
+    const router = useRouter();
+
     return (
         <section className="py-24 px-6 bg-gray-100">
             <div className="max-w-6xl mx-auto">
@@ -15,14 +20,24 @@ const Features = () => {
 
                 {/* ROW 1 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
-                    <div className="order-2 md:order-1 text-2xl md:text-2xl font-light mb-6">
-                        Effortlessly review demos of prospective artists with our intuitive content swiping system.
-                        Swipe through demos, provide feedback, and compare versions, all through effective collaboration.
+                    <div className="order-2 md:order-1 text-left md:pr-8">
+                        <h3 className="text-2xl md:text-3xl font-semibold text-gray-900">
+                            Review Demo Submissions Efficiently
+                        </h3>
+                        <p className="mt-4 text-base md:text-lg text-gray-700 leading-relaxed">
+                            Effortlessly review demos sent to you by artists with our intuitive demo
+                            submissions dashboard.
+                        </p>
+                        <button
+                            type="button"
+                            className="mt-6 inline-flex items-center gap-2 text-violet-600 font-semibold hover:underline"
+                            onClick={() => router.push('/submissionPage')}
+                        >
+                            Explore Demo Submissions &gt;&gt;&gt;
+                        </button>
                     </div>
+
                     <div className="order-1 md:order-2">
-                        <div className="text-md font-bold text-gray-800 mb-3 text-center md:text-right">
-                            Review Demos
-                        </div>
                         <Card className="border border-gray-200">
                             <CardContent className="p-0">
                                 <div className="relative aspect-video flex items-center justify-center bg-gray-50">
@@ -42,13 +57,10 @@ const Features = () => {
 
                 {/* ROW 2 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
-                    <div className="order-1 md:order-1">
-                        <div className="text-md font-bold text-gray-800 mb-3 text-center md:text-left">
-                            Real-Time Progress Updates
-                        </div>
+                    <div className="order-1">
                         <Card className="border border-gray-200">
                             <CardContent className="p-0">
-                                <div className="relative aspect-video flex items-center justify-center bg-gray-50">
+                                <div className="relative aspect-video bg-gray-50 overflow-hidden">
                                     <iframe
                                         className="absolute inset-0 h-full w-full"
                                         src="https://www.youtube-nocookie.com/embed/PRZrHzhpBpw?rel=0&modestbranding=1&playsinline=1"
@@ -61,24 +73,28 @@ const Features = () => {
                             </CardContent>
                         </Card>
                     </div>
-
-                    <div className="order-2 md:order-2 text-2xl md:text-2xl font-light mb-6">
-                        With the help of AI, get notified in real-time on the edits, comments, 
-                        and changes your collaborators make on the projects you’re working on.
+                    <div className="order-2 md:pl-8 text-left">
+                        <h3 className="text-2xl md:text-3xl font-semibold text-gray-900">
+                            Filter Your Catalog
+                        </h3>
+                        <p className="mt-4 text-base md:text-lg text-gray-700 leading-relaxed">
+                            Our trained AI model evaluates and ranks demo submissions based on
+                            compatibility and alignment with the label’s vision.
+                        </p>
                     </div>
                 </div>
 
                 {/* ROW 3 */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div className="order-2 md:order-1 text-2xl md:text-2xl font-light mb-6">
-                        Never miss a beat in the creative process through our all-in-one dashboard. 
-                        Monitor the status across projects and artists, explore detailed artist profiles, 
-                        and seamlessly review their discography and timelines.
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
+                    <div className="order-2 md:order-1 text-left md:pr-8">
+                        <h3 className="text-2xl md:text-3xl font-semibold text-gray-900">
+                            All-in-One Dashhboard
+                        </h3>
+                        <p className="mt-4 text-base md:text-lg text-gray-700 leading-relaxed">
+                            Never miss a beat in the scouting process through our all-in-one dashboard. Centralize reviewing demos, contacting, and finalizing contracts all-in-one place.
+                        </p>
                     </div>
                     <div className="order-1 md:order-2">
-                        <div className="text-md font-bold text-gray-800 mb-3 text-center md:text-right">
-                            All-in-One Dashboard
-                        </div>
                         <Card className="border border-gray-200">
                             <CardContent className="p-0">
                                 <div className="relative aspect-video flex items-center justify-center bg-gray-50">
