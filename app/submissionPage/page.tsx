@@ -32,7 +32,6 @@ const companies = [
 export default function DemoSubmissionForm() {
     const { toast } = useToast();
 
-    // 폼 상태
     const [formData, setFormData] = useState<FormData>({
         name: "",
         age: "",
@@ -57,10 +56,9 @@ export default function DemoSubmissionForm() {
         return () => document.removeEventListener("mousedown", onClickOutside);
     }, []);
 
-    // 필터 결과
     const filteredCompanies = useMemo(() => {
         const q = labelQuery.trim().toLowerCase();
-        if (!q) return companies; // 입력이 비어도 화살표로 전체 펼칠 수 있게 전체 반환
+        if (!q) return companies;
         return companies.filter((c) => c.toLowerCase().includes(q));
     }, [labelQuery]);
 
@@ -113,7 +111,6 @@ export default function DemoSubmissionForm() {
             return;
         }
 
-        // 여기에 백엔드 전송 로직
         console.log("Form submitted:", formData);
 
         toast({
@@ -121,7 +118,6 @@ export default function DemoSubmissionForm() {
             description: "We'll review your submission and get back to you soon.",
         });
 
-        // 폼 리셋
         setFormData({
             name: "",
             age: "",
@@ -167,7 +163,6 @@ export default function DemoSubmissionForm() {
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            {/* === Company Selection: 입력창 + 추천 리스트 === */}
                             <div className="space-y-2" ref={companyBoxRef}>
                                 <Label className="flex items-center gap-2">
                                     <Building className="w-4 h-4" />
@@ -181,9 +176,9 @@ export default function DemoSubmissionForm() {
                                         onChange={(e) => {
                                             const v = e.target.value;
                                             setLabelQuery(v);
-                                            setShowList(true);              // 타이핑하면 자동으로 리스트 오픈
+                                            setShowList(true);        
                                             if (formData.company && v !== formData.company) {
-                                                setFormData((p) => ({ ...p, company: "" })); // 입력 바꾸면 확정 해제
+                                                setFormData((p) => ({ ...p, company: "" }));
                                             }
                                         }}
                                         onFocus={() => setShowList(true)}
@@ -194,7 +189,6 @@ export default function DemoSubmissionForm() {
                                         role="combobox"
                                     />
 
-                                    {/* 우측 아이콘 버튼들 */}
                                     <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                                         {formData.company && (
                                             <button
@@ -214,11 +208,8 @@ export default function DemoSubmissionForm() {
                                         <button
                                             type="button"
                                             onClick={() => {
-                                                // 화살표를 누르면 전체 리스트 토글 (입력 비워도 전체가 열림)
                                                 setShowList((s) => !s);
                                                 if (!showList && labelQuery === "") {
-                                                    // 처음 열 때 전체 보여주기
-                                                    // (filteredCompanies는 labelQuery가 빈 문자열이면 전체 반환)
                                                 }
                                             }}
                                             className="p-1 rounded hover:bg-gray-100"
@@ -230,7 +221,6 @@ export default function DemoSubmissionForm() {
                                     </div>
                                 </div>
 
-                                {/* 결과 리스트 (아코디언 헤더 없이 바로 표시) */}
                                 {showList && filteredCompanies.length > 0 && (
                                     <div className="border rounded-md overflow-hidden">
                                         <ul className="max-h-56 overflow-auto divide-y">
@@ -256,7 +246,7 @@ export default function DemoSubmissionForm() {
                                     </div>
                                 )}
 
-                                {/* 미선택 안내 */}
+                                {/* notification if there are no input*/}
                                 {!formData.company && (
                                     <p className={`text-xs ${noMatches ? "text-red-600" : "text-orange-600"}`}>
                                         {noMatches

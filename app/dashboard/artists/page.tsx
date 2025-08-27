@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"; //For 툴팁
 import { FaInstagram } from "react-icons/fa6";
 import { Pencil, ChevronRight, Edit3, Plus as PlusIcon, Unlock } from "lucide-react";
-import { ProjectCard } from "@/components/ProjectCard";
+import { ProjectCard } from "@/components/profile/ProjectCard";
 import Link from "next/link";
 import { types, ProjectType, Project } from "@/types/project";
 

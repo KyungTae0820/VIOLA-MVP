@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui";
+import InfiniteCarousel from '@/components/landing/InfiniteCarousel';
 
 interface HeroProps {
     onStartDemo: () => void;
@@ -6,7 +7,9 @@ interface HeroProps {
 
 const Hero = ({ onStartDemo }: HeroProps) => {
     return (
-        <section className="relative min-h-screen flex flex-col items-start justify-start bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)] overflow-hidden pt-40">
+        <section className="relative min-h-screen flex flex-col items-center justify-start
+                    bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)]
+                    overflow-hidden pt-40 pb-20">
             {/* Background decoration */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl"></div>
@@ -20,7 +23,7 @@ const Hero = ({ onStartDemo }: HeroProps) => {
 
 
             {/* Center content (title removed) */}
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 z-10 text-center text-white px-6 w-full max-w-4xl">
+            <div className="relative z-10 mx-auto w-full max-w-4xl px-6 text-center text-white">
                 <div className="mb-8">
                     {/* removed big h1 + underline */}
                     <p className="text-xl md:text-6xl font-semibold mb-6 leading-tight max-w-2xl mx-auto">
@@ -29,7 +32,7 @@ const Hero = ({ onStartDemo }: HeroProps) => {
                 </div>
 
                 <div className="space-y-6">
-                    <h2 className="text-2xl md:text-2xl font-light mb-6">
+                    <h2 className="text-2xl font-light mb-6">
                         You deserve better than inbox chaos. Get 20 brand-consistent tracks in minutes without having to go through 300 demos.
                         No auto-rejects. Just prioritized contenders trained on your catalog.
                     </h2>
@@ -57,63 +60,29 @@ const Hero = ({ onStartDemo }: HeroProps) => {
                             allowFullScreen
                         />
                     </div>
-                    <p className="text-xl md:text-1xl font-light mb-8 leading-relaxed max-w-2xl mx-auto">
+                    <p className="text-xl font-light leading-relaxed max-w-2xl mx-auto">
                         Built For Visionaries. Trusted by Established Indie Labels
                     </p>
                 </div>
             </div>
 
-            {/* Carousel */}
-            {/* Carousel (seamless infinite loop) */}
-            <div className="absolute bottom-17 left-0 w-full overflow-hidden">
-                <div className="viola-marquee">
-                    {/* track content (길게 반복) */}
-                    <div className="viola-track">
-                        {Array(2)
-                            .fill([
-                                "Company A",
-                                "Company B",
-                                "Company C",
-                                "Company D",
-                                "Company E",
-                                "Company F",
-                                "Company G",
-                            ])
-                            .flat()
-                            .map((name, i) => (
-                                <span
-                                    key={i}
-                                    className="mx-8 inline-block text-white text-lg font-semibold whitespace-nowrap"
-                                >
-                                    {name}
-                                </span>
-                            ))}
-                    </div>
-                </div>
+            <div className="flex-1" />
 
-                <style jsx global>{`
-                    .viola-marquee {
-                    display: flex;
-                    white-space: nowrap;
-                    }
-                    .viola-track {
-                    display: inline-flex;
-                    animation: viola-scroll 20s linear infinite;
-                    }
-                    @keyframes viola-scroll {
-                    0% {
-                        transform: translateX(0);
-                    }
-                    100% {
-                        transform: translateX(-50%);
-                    }
-                    }
-                `}</style>
+            {/* Carousel - seamless */}
+            <div className="mt-8 w-full">
+                <InfiniteCarousel
+                    items={[
+                        'Company A', 'Company B', 'Company C', 'Company D', 'Company E', 'Company F', 'Company G',
+                    ]}
+                    speed={30}                      
+                    gapClassName="gap-12 md:gap-16"    
+                    className="h-12 md:h-16"
+                    itemClassName="text-white text-base md:text-lg" 
+                />
             </div>
 
-
             {/* Scroll indicator */}
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white opacity-70">
+            <div className="mt-6 text-white opacity-70">
                 <div className="animate-bounce">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />

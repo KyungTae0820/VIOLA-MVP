@@ -156,7 +156,8 @@ const Dashboard = () => {
                                 </CardHeader>
                                 <CardContent className="relative p-6 overflow-hidden">
                                     <div className="min-h-[clamp(240px,22vw,300px)]" />
-                                    <div
+                                    <Link
+                                        href="/dashboard/ardashboard"
                                         className="absolute inset-4 md:inset-6 rounded-xl overflow-hidden
                                         flex items-center justify-center
                                         bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)]
@@ -167,7 +168,7 @@ const Dashboard = () => {
                                         <span className="whitespace-nowrap text-lg md:text-2xl lg:text-3xl font-semibold leading-none">
                                             Go to A&R Dashboard
                                         </span>
-                                    </div>
+                                    </Link>
                                 </CardContent>
                             </Card>
 

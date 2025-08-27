@@ -105,7 +105,6 @@ const CompleteProfile = () => {
 
     let imageUrl = form.image || "";
 
-    // ✅ 여기서 기존 Supabase Storage 업로드 로직 대신 API 호출
     if (imageFile) {
       const ext = imageFile.name.split(".").pop() || "jpg";
       const safeFirst = form.firstname.trim().replace(/\s+/g, "-");
@@ -129,7 +128,6 @@ const CompleteProfile = () => {
       imageUrl = json.url as string;
     }
 
-    // 이후 프로필 DB 업서트
     const { error } = await supabase.from("profiles").upsert(
       [
         {

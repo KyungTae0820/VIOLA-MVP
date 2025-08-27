@@ -15,7 +15,6 @@ const Index = () => {
             description: "We're setting up your personalized demo experience. You'll be redirected to the dashboard shortly.",
         });
 
-        // Simulate navigation to dashboard
         setTimeout(() => {
             window.location.href = '/login';
         }, 1000);

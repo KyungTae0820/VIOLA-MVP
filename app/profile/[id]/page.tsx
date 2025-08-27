@@ -1,6 +1,6 @@
 import { fetchProfileById } from "@/lib/supabase/profile";
-import ProfileCard from "@/components/ProfileCard";
-import ProjectsSection from "@/components/ProjectsSection";
+import ProfileCard from "@/components/profile/ProfileCard";
+import ProjectsSection from "@/components/profile/ProjectsSection";
 import { LogoutButton } from "@/components/ui";
 import Link from "next/link";
 
