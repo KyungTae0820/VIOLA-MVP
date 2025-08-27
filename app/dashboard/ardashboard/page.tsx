@@ -1,6 +1,7 @@
 import { Suspense } from "react";
-import { useRouter } from "next/navigation";
-import { ARDashboard } from "@/components/ar/ARDashboard";
+import Client from "./_client";
+
+export const dynamic = "force-dynamic";
 
 export default function Page() {
   return (
@@ -8,10 +9,4 @@ export default function Page() {
       <Client />
     </Suspense>
   );
-}
-
-function Client() {
-  "use client";
-  const router = useRouter();
-  return <ARDashboard onBack={() => router.push("/dashboard")} />;
 }
