@@ -267,7 +267,7 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
                           md:bg-[radial-gradient(1200px_360px_at_80%_50%,rgba(255,255,255,0.30),transparent)]"/>
             <CardContent className="relative z-10 p-3 md:p-4 text-white">
               <div className="grid md:grid-cols-3 gap-3 md:gap-4">
-                <div className="ml-2 md:ml-3">  {/* ← 살짝 오른쪽으로 */}
+                <div className="ml-2 md:ml-3">
                   <h3 className="font-semibold text-white mb-2 text-lg md:text-xl leading-tight">
                     Contact Info
                   </h3>

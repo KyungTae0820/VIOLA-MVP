@@ -9,7 +9,7 @@ const Hero = ({ onStartDemo }: HeroProps) => {
     return (
         <section className="relative min-h-screen flex flex-col items-center justify-start
                     bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)]
-                    overflow-hidden pt-40 pb-20">
+                    overflow-hidden pt-10">
             {/* Background decoration */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl"></div>
@@ -82,7 +82,7 @@ const Hero = ({ onStartDemo }: HeroProps) => {
             </div>
 
             {/* Scroll indicator */}
-            <div className="mt-6 text-white opacity-70">
+            <div className="mt-3 text-white opacity-70">
                 <div className="animate-bounce">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />

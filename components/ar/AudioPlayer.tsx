@@ -51,7 +51,7 @@ export const AudioPlayer = ({ src, title, artist, className }: AudioPlayerProps)
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
     if (!audio) return;
-    
+
     const time = parseFloat(e.target.value);
     audio.currentTime = time;
     setCurrentTime(time);
@@ -60,7 +60,7 @@ export const AudioPlayer = ({ src, title, artist, className }: AudioPlayerProps)
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
     if (!audio) return;
-    
+
     const vol = parseFloat(e.target.value);
     audio.volume = vol;
     setVolume(vol);
@@ -70,7 +70,7 @@ export const AudioPlayer = ({ src, title, artist, className }: AudioPlayerProps)
   const toggleMute = () => {
     const audio = audioRef.current;
     if (!audio) return;
-    
+
     if (isMuted) {
       audio.volume = volume;
       setIsMuted(false);
@@ -89,14 +89,14 @@ export const AudioPlayer = ({ src, title, artist, className }: AudioPlayerProps)
   return (
     <div className={cn("bg-card border border-border rounded-lg p-4 shadow-card", className)}>
       <audio ref={audioRef} src={src} />
-      
+
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h4 className="font-semibold text-foreground">{title}</h4>
             <p className="text-sm text-muted-foreground">{artist}</p>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <Button
               size="sm"
@@ -106,7 +106,7 @@ export const AudioPlayer = ({ src, title, artist, className }: AudioPlayerProps)
             >
               {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
             </Button>
-            
+
             <input
               type="range"
               min={0}
@@ -123,9 +123,16 @@ export const AudioPlayer = ({ src, title, artist, className }: AudioPlayerProps)
           <Button
             size="sm"
             onClick={togglePlay}
-            className="h-10 w-10 p-0 rounded-full bg-gradient-primary hover:shadow-glow transition-all duration-300"
+            variant="default"
+            className="h-10 w-10 p-0 rounded-full
+             bg-gradient-to-r from-violet-600 to-fuchsia-600
+             text-white hover:opacity-90 shadow-md
+             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"
+            aria-label={isPlaying ? "Pause" : "Play"}
           >
-            {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+            {isPlaying
+              ? <Pause className="h-5 w-5 text-white" />
+              : <Play className="h-5 w-5 text-white" />}
           </Button>
 
           <div className="flex-1 space-y-1">
