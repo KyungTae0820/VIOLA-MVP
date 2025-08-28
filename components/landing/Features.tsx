@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from "@/components/ui/card";
+import AutoSubmitDemo from "@/components/animation/AutoSubmitDemo";
 
 const Features = () => {
     const router = useRouter();
@@ -40,15 +41,8 @@ const Features = () => {
                     <div className="order-1 md:order-2">
                         <Card className="border border-gray-200">
                             <CardContent className="p-0">
-                                <div className="relative aspect-video flex items-center justify-center bg-gray-50">
-                                    <iframe
-                                        className="absolute inset-0 h-full w-full"
-                                        src="https://www.youtube-nocookie.com/embed/PRZrHzhpBpw?rel=0&modestbranding=1&playsinline=1"
-                                        title="Viola demo"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        referrerPolicy="strict-origin-when-cross-origin"
-                                        allowFullScreen
-                                    />
+                                <div className="relative aspect-video bg-gray-50">
+                                    <AutoSubmitDemo preview demoMode shrink={0.72} autoScroll />
                                 </div>
                             </CardContent>
                         </Card>
