@@ -9,14 +9,14 @@ const Hero = ({ onStartDemo }: HeroProps) => {
     return (
         <section className="relative min-h-screen flex flex-col items-center justify-start
                     bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)]
-                    overflow-hidden pt-10">
+                    overflow-hidden pt-[calc(env(safe-area-inset-top)+96px)] sm:pt-24 md:pt-28">
             {/* Background decoration */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl"></div>
                 <div className="absolute bottom-20 right-20 w-96 h-96 bg-white rounded-full blur-3xl"></div>
             </div>
 
-            <div className="absolute top-6 left-6 z-20 text-white">
+            <div className="absolute top-4 sm:top-6 left-6 z-20 text-white">
                 <h1 className="text-3xl md:text-4xl font-bold tracking-tight">VIOLA.</h1>
                 <div className="mt-1 h-0.5 w-27 bg-white/80"></div>
             </div>

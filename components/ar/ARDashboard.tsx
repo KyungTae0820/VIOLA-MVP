@@ -6,7 +6,8 @@ import { Badge, Input, Button, Card, CardContent, CardHeader, CardTitle } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { AudioPlayer } from "./AudioPlayer";
-import { ArrowLeft, Search, Clock, CheckCircle, XCircle, Filter, User, Music, ChevronRight } from "lucide-react";
+import { ArrowLeft, Search, Clock, CheckCircle, XCircle, Filter, User, Music, ChevronRight, ChevronDown } from "lucide-react";
+import ReelVideo from "@/components/ui/ReelVideo";
 
 interface ARDashboardProps {
   onBack: () => void;
@@ -25,6 +26,7 @@ type Submission = {
   submittedAt: string;
   status: Status;
   audioSrc: string;
+  videoSrc?: string;
 };
 
 type ArtistProfile = {
@@ -44,24 +46,24 @@ type ArtistProfile = {
 
 const mockSubmissions: Submission[] = [
   {
-    id: 1, artistName: "Luna Waves", trackTitle: "Midnight Echo", genre: "Electronic", email: "luna@email.com",
+    id: 1, artistName: "Jackson Wang", trackTitle: "GBAD", genre: "Hip Hop", email: "jacksonwang@email.com",
     description: "A dreamy electronic track with ethereal vocals and atmospheric synths. Inspired by late night city walks and neon lights.",
-    socialMedia: "@lunawaves_music", submittedAt: "2024-01-15", status: "pending", audioSrc: "/api/placeholder-audio"
+    socialMedia: "@jacksonwang", submittedAt: "2024-01-15", status: "pending", audioSrc: "/api/placeholder-audio", videoSrc: "https://music.youtube.com/watch?v=KEYpNZLotMs&feature=shared&feature=xapp_share"
   },
   {
-    id: 2, artistName: "Luna Waves", trackTitle: "Digital Dreams", genre: "Electronic", email: "luna@email.com",
+    id: 2, artistName: "Jackson Wang", trackTitle: "Made Me a Man", genre: "Hip Hop", email: "jacksonwang@email.com",
     description: "Upbeat electronic anthem with pulsing beats and soaring melodies. Perfect for late night drives.",
-    socialMedia: "@lunawaves_music", submittedAt: "2024-01-10", status: "approved", audioSrc: "/api/placeholder-audio"
+    socialMedia: "@jacksonwang", submittedAt: "2024-01-10", status: "approved", audioSrc: "/api/placeholder-audio", videoSrc: "https://youtu.be/Zh6W6zOl4kY?feature=shared"
   },
   {
-    id: 3, artistName: "Rhythm Collective", trackTitle: "Urban Pulse", genre: "Hip Hop", email: "collective@email.com",
+    id: 3, artistName: "Big Naughty", trackTitle: "Beyond Love", genre: "Hip Hop", email: "bignaughty@email.com",
     description: "Hard-hitting hip hop track with conscious lyrics about city life. Features live instrumentation mixed with modern production.",
-    socialMedia: "rhythmcollective.com", submittedAt: "2024-01-14", status: "approved", audioSrc: "/api/placeholder-audio"
+    socialMedia: "@bignaughtyboi", submittedAt: "2024-01-14", status: "approved", audioSrc: "/api/placeholder-audio", videoSrc: "https://youtube.com/shorts/F3zpQMFC2g8?feature=shared"
   },
   {
-    id: 4, artistName: "Rhythm Collective", trackTitle: "Street Poetry", genre: "Hip Hop", email: "collective@email.com",
+    id: 4, artistName: "Big Naughty", trackTitle: "Vancouver", genre: "Hip Hop", email: "bignaughty@email.com",
     description: "Raw storytelling over boom-bap beats. A tribute to underground hip hop culture.",
-    socialMedia: "rhythmcollective.com", submittedAt: "2024-01-08", status: "pending", audioSrc: "/api/placeholder-audio"
+    socialMedia: "@bignaughtyboi", submittedAt: "2024-01-14", status: "approved", audioSrc: "/api/placeholder-audio", videoSrc: "https://www.youtube.com/watch?v=WxM0qO29RM8"
   },
   {
     id: 5, artistName: "Indie Rose", trackTitle: "Sunset Drive", genre: "Indie", email: "rose@email.com",
@@ -86,8 +88,8 @@ const mockSubmissions: Submission[] = [
 ];
 
 const artistMeta: Record<string, { age?: number; ethnicity?: string; avatar?: string }> = {
-  "Luna Waves": { age: 24, ethnicity: "Korean-American", avatar: "/images/luna.jpg", },
-  "Rhythm Collective": { age: 29, ethnicity: "African-American", avatar: "/images/rhythm.jpg", },
+  "Jackson Wang": { age: 31, ethnicity: "Chinese", avatar: "/assets/jacksonwang.jpg", },
+  "Big Naughty": { age: 22, ethnicity: "Korean", avatar: "/assets/bignaughty.jpg", },
   "Indie Rose": { age: 27, ethnicity: "Chinese", avatar: "/images/indie.jpg", },
   "Velvet Sound": { age: 31, ethnicity: "Latino", avatar: "/images/velvet.jpg", },
 };
@@ -174,11 +176,18 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
     }
   };
 
+
+  const [infoOpen, setInfoOpen] = useState(true);
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 768) setInfoOpen(true);
+  }, []);
+
   if (selectedArtist && selectedArtistData) {
     return (
       <div className="min-h-screen bg-white px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
+          {/* 헤더 */}
+          <div className="flex items-center justify-between mb-3">
             <Button variant="ghost" onClick={() => setSelectedArtist(null)} className="text-slate-600 hover:text-slate-900">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Artists
@@ -189,91 +198,123 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
                 <User className="w-5 h-5 text-primary" />
               </div>
               <h1 className="text-3xl font-bold text-transparent bg-clip-text
-                bg-[linear-gradient(90deg,_#7C3AED_0%,_#8B5CF6_50%,_#C084FC_100%)] drop-shadow-sm">
+              bg-[linear-gradient(90deg,_#7C3AED_0%,_#8B5CF6_50%,_#C084FC_100%)] drop-shadow-sm">
                 {selectedArtistData.artistName}
               </h1>
             </div>
           </div>
 
-          {/* Artist Info */}
-          <Card className="relative mb-8 shadow-lg overflow-hidden min-h-[144px]">
-            <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#FDE68A]" />
-            <div className="pointer-events-none absolute inset-0 z-0
-    sm:bg-[radial-gradient(900px_300px_at_65%_50%,rgba(255,255,255,0.30),transparent)]
-    md:bg-[radial-gradient(1200px_360px_at_80%_50%,rgba(255,255,255,0.30),transparent)]" />
-            <CardContent className="relative z-10 p-3 md:p-4 text-white">
-              <div className="grid md:grid-cols-4 gap-3 md:gap-4 items-start content-start">
-                <div className="flex items-center justify-center">
-                  <div className="h-28 w-28 rounded-xl overflow-hidden bg-slate-200 shadow-md">
-                    {selectedArtistData.avatar ? (
-                      <img
-                        src={selectedArtistData.avatar}
-                        alt={`${selectedArtistData.artistName} thumbnail`}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <span className="flex items-center justify-center h-full w-full text-slate-500 text-sm">
-                        Thumbnail
-                      </span>
-                    )}
+          <div className="grid md:grid-cols-12 gap-6">
+            {/* LEFT: Artist Info (sticky) */}
+            <div className="md:col-span-4">
+              <Card className="relative shadow-lg overflow-hidden min-h-[144px] md:sticky md:top-4">
+                <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#FDE68A]" />
+                <div className="pointer-events-none absolute inset-0 z-0 sm:bg-[radial-gradient(900px_300px_at_65%_50%,rgba(255,255,255,0.30),transparent)] md:bg-[radial-gradient(1200px_360px_at_80%_50%,rgba(255,255,255,0.30),transparent)]" />
+                <CardContent className="relative z-10 p-4 text-white">
+                  <div className="grid grid-cols-3 gap-3 items-start">
+                    <div className="col-span-1 flex items-center justify-center">
+                      <div className="h-24 w-24 rounded-xl overflow-hidden bg-slate-200 shadow-md">
+                        {selectedArtistData.avatar ? (
+                          <img src={selectedArtistData.avatar} alt={`${selectedArtistData.artistName} thumbnail`} className="h-full w-full object-cover" />
+                        ) : (
+                          <span className="flex items-center justify-center h-full w-full text-slate-500 text-sm">Thumbnail</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="col-span-2 md:col-span-2 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setInfoOpen(v => !v)}
+                        className="md:hidden inline-flex items-center gap-1 rounded-md px-2 py-1 text-white/90 bg-white/10 hover:bg-white/20 transition"
+                      >
+                        <ChevronDown className={`w-4 h-4 transition-transform ${infoOpen ? "rotate-180" : ""}`} />
+                        <span className="text-sm">{infoOpen ? "Hide" : "Show"}</span>
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                {/* Contact Info */}
-                <div className="ml-2 md:ml-3">
-                  <h3 className="font-semibold text-white mb-2 text-lg md:text-xl leading-tight">Contact Info</h3>
-                  <p className="text-white text-base md:text-lg leading-snug">Email: {selectedArtistData.email}</p>
-                  <p className="text-white text-base md:text-lg leading-snug">Social: {selectedArtistData.socialMedia}</p>
-                  <p className="text-white text-base md:text-lg leading-snug">Ethnicity: {selectedArtistData.ethnicity ?? "-"}</p>
-                  <p className="text-white text-base md:text-lg leading-snug">Age: {selectedArtistData.age ?? "-"}</p>
-                </div>
+                  <div className={`${infoOpen ? "block" : "hidden"} md:block`}>
+                    <div className="grid grid-cols-3 gap-3 items-start mt-3">
+                      <div className="col-span-3 md:col-span-3">
+                        <h4 className="font-semibold text-white mb-1 text-lg leading-tight">Contact Info</h4>
+                        <div className="space-y-1 text-sm text-white">
+                          <p className="md:whitespace-nowrap">Ethnicity: {selectedArtistData.ethnicity ?? "-"}</p>
+                          <p className="md:whitespace-nowrap">Age: {selectedArtistData.age ?? "-"}</p>
+                          <p className="md:whitespace-nowrap">Email: {selectedArtistData.email}</p>
+                          <p className="md:whitespace-nowrap">Social: {selectedArtistData.socialMedia}</p>
+                        </div>
+                      </div>
+                    </div>
 
-                {/* Genres */}
-                <div>
-                  <h3 className="font-semibold text-white mb-1 text-lg md:text-xl leading-tight">Genres</h3>
-                  <div className="flex flex-wrap gap-1">
-                    {Array.from(selectedArtistData.genres).map((genre) => (
-                      <Badge key={genre} variant="secondary">{genre}</Badge>
-                    ))}
-                  </div>
-                </div>
+                    <div className="mt-3">
+                      <h4 className="font-semibold text-white mb-1 text-lg leading-tight">Genres</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {Array.from(selectedArtistData.genres).map((g) => (
+                          <Badge key={g} variant="secondary">{g}</Badge>
+                        ))}
+                      </div>
+                    </div>
 
-                {/* Submission Stats */}
-                <div className="flex items-start">
-                  <div className="w-full pl-0 md:pl-1">
-                    <h3 className="font-semibold text-white mb-1 text-lg md:text-xl leading-tight">Submission Stats</h3>
-                    <div className="mt-2 w-full max-w-[200px] rounded-xl bg-white/90 backdrop-blur-sm shadow-sm p-2">
-                      <div className="space-y-1 text-md">
-                        <p className="text-green-500">{selectedArtistData.statuses.approved} Approved</p>
-                        <p className="text-yellow-500">{selectedArtistData.statuses.pending} Pending</p>
-                        <p className="text-red-500">{selectedArtistData.statuses.rejected} Rejected</p>
+                    <div className="mt-3">
+                      <h4 className="font-semibold text-white mb-1 text-lg leading-tight">Submission Stats</h4>
+                      <div className="mt-2 w-full rounded-xl bg-white/90 backdrop-blur-sm shadow-sm p-2">
+                        <div className="space-y-1 text-sm">
+                          <p className="text-green-600">{selectedArtistData.statuses.approved} Approved</p>
+                          <p className="text-yellow-600">{selectedArtistData.statuses.pending} Pending</p>
+                          <p className="text-red-600">{selectedArtistData.statuses.rejected} Rejected</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </CardContent>
+              </Card>
+            </div>
 
-              </div>
-            </CardContent>
-          </Card>
+            {/* RIGHT: Reels feed */}
+            <div className="md:col-span-8">
+              <Card className="shadow-lg border-slate-200 bg-white">
+                <CardHeader className="pb-1">
+                  <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                    <Music className="w-5 h-5" />
+                    Demo Submissions ({selectedArtistData.submissions.length})
+                  </CardTitle>
+                </CardHeader>
 
-          {/* Demo Carousel */}
-          <Card className="shadow-lg border-slate-200 bg-white">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Music className="w-5 h-5" />
-                Demo Submissions ({selectedArtistData.submissions.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <Carousel className="w-full">
-                <CarouselContent>
-                  {selectedArtistData.submissions.map((submission) => (
-                    <CarouselItem key={submission.id}>
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                          <div>
-                            <h3 className="text-2xl font-bold text-slate-900">{submission.trackTitle}</h3>
-                            <div className="flex items-center gap-2 mt-2">
+                <CardContent className="pt-2 px-2 md:px-3 md:pt-2">
+                  <div
+                    className="
+          relative
+          h-[80vh] md:h-[calc(100vh-260px)]  /* ← 컨테이너를 화면 높이로 */
+          overflow-y-auto
+          snap-y snap-mandatory
+          scroll-smooth
+        "
+                  >
+                    {selectedArtistData.submissions.map((submission, idx) => (
+                      <section
+                        key={submission.id}
+                        className={`
+      snap-start snap-always
+      h-full flex items-center justify-center
+      p-2 md:p-3
+      ${idx !== 0 ? "border-t border-slate-200" : ""}  /* 첫 섹션 빼고 위에 선 */
+    `}
+                      >
+                        <div className="grid md:grid-cols-2 gap-4 w-full max-w-4xl h-full">
+                          {/* Video / Audio */}
+                          <div className="relative rounded-xl overflow-hidden bg-black h-full">
+                            {submission.videoSrc ? (
+                              <ReelVideo src={submission.videoSrc} className="absolute inset-0 w-full h-full" />
+                            ) : (
+                              <div className="absolute inset-0 flex items-center justify-center bg-slate-100 p-6">
+                                <AudioPlayer
+                                  src={submission.audioSrc}
+                                  title={submission.trackTitle}
+                                  artist={submission.artistName}
+                                />
+                              </div>
+                            )}
+                            <div className="absolute top-2 left-2 flex gap-2">
                               <Badge variant="secondary">{submission.genre}</Badge>
                               <Badge className={getStatusColor(submission.status)}>
                                 {getStatusIcon(submission.status)}
@@ -282,41 +323,37 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
                             </div>
                           </div>
 
-                          <div>
-                            <p className="text-slate-600 text-sm mb-2">Description:</p>
-                            <p className="text-sm leading-relaxed text-slate-700">{submission.description}</p>
-                          </div>
-
-                          <p className="text-slate-600 text-sm">Submitted: {submission.submittedAt}</p>
-
-                          {submission.status === "pending" && (
-                            <div className="flex gap-2 pt-4">
-                              <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                                <CheckCircle className="w-4 h-4 mr-1" /> Approve
-                              </Button>
-                              <Button size="sm" variant="destructive">
-                                <XCircle className="w-4 h-4 mr-1" /> Reject
-                              </Button>
+                          {/* Meta + Actions */}
+                          <div className="flex flex-col justify-center space-y-2">
+                            <div>
+                              <h3 className="text-xl font-bold text-slate-900">{submission.trackTitle}</h3>
+                              <p className="text-slate-600 text-xs">Submitted: {submission.submittedAt}</p>
                             </div>
-                          )}
+                            <p className="text-sm leading-relaxed text-slate-700">{submission.description}</p>
+                            {submission.status === "pending" && (
+                              <div className="flex gap-2 pt-1">
+                                <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                                  <CheckCircle className="w-4 h-4 mr-1" /> Approve
+                                </Button>
+                                <Button size="sm" variant="destructive">
+                                  <XCircle className="w-4 h-4 mr-1" /> Reject
+                                </Button>
+                              </div>
+                            )}
+                          </div>
                         </div>
-
-                        <div>
-                          <AudioPlayer src={submission.audioSrc} title={submission.trackTitle} artist={submission.artistName} />
-                        </div>
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </CardContent>
-          </Card>
+                      </section>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
+
 
   const GENRE_LABELS: Record<string, string> = {
     all: "All Genres",

@@ -11,19 +11,20 @@ const AboutSection = () => {
                         </h2>
                         <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                             <p>
-                                Viola.co is more than just a project management platform—it&apos;s a comprehensive
-                                ecosystem designed specifically for the creative industry. We understand the unique
-                                challenges artists face when collaborating across different time zones, managing
-                                multiple projects, and maintaining professional relationships.
+                                VIOLA is not only an A&R toolkit, but a platform designed for A&Rs looking to rapidly enhance the workflow of managing demos. 
                             </p>
                             <p>
-                                Our SaaS platform combines powerful project management capabilities with
-                                industry-specific tools that help artists, producers, and creative professionals
-                                streamline their workflow and focus on what they do best: creating.
+                                We at VIOLA understand the frustration of manually sifting through demos, in hopes of finding the right track for the artists. 
+                                But when it takes hours, it’s simply inefficient when keeping up in today’s fast-paced and demanding society.
                             </p>
                             <p>
-                                From solo artists managing their first album to established labels coordinating
-                                multiple releases, Viola.co scales with your needs and grows with your career.
+                                At VIOLA, producers and songwriters can upload their demos and unreleased tracks internally for you to review. 
+                                With the help of [name], our AI system, you can prompt what you are looking for and your demos will be ranked and recommended based on it, 
+                                saving you loads of time in finding best fit demos and tracks for artists.
+                            </p>
+                            <p>
+                                With the ability to pitch and contact the other side, VIOLA streamlines the whole A&R scouting process, 
+                                making life easier for the eyes and ears of the music industry.
                             </p>
                         </div>
                     </div>
