@@ -158,6 +158,7 @@ const Dashboard = () => {
                                     <div className="min-h-[clamp(240px,22vw,300px)]" />
                                     <Link
                                         href="/dashboard/ardashboard"
+                                        data-tour="go-anr"                       
                                         className="absolute inset-4 md:inset-6 rounded-xl overflow-hidden
                                         flex items-center justify-center
                                         bg-[linear-gradient(135deg,_#7C3AED_0%,_#8B5CF6_15%,_#A78BFA_30%,_#C4B5FD_48%,_#E9D5FF_65%,_#FDE68A_100%)]

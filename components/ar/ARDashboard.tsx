@@ -9,6 +9,8 @@ import { AudioPlayer } from "./AudioPlayer";
 import { ArrowLeft, Search, Clock, CheckCircle, XCircle, Filter, User, Music, ChevronRight, ChevronDown } from "lucide-react";
 import ReelVideo from "@/components/ui/ReelVideo";
 
+const toSlug = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
+
 interface ARDashboardProps {
   onBack: () => void;
 }
@@ -111,13 +113,20 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
   }, [selectedFromUrl, selectedArtist]);
 
   const setSelectedArtist = (name: string | null) => {
+    const p = new URLSearchParams(Array.from(searchParams.entries()));
+
     if (name) {
-      const p = new URLSearchParams(searchParams);
-      p.set('artist', name);
-      router.push(`/dashboard/ardashboard?${p.toString()}`);
+      p.set("artist", name);     
     } else {
-      router.push('/dashboard/ardashboard');
+      p.delete("artist");   
     }
+
+    ["demo", "embed", "tempo"].forEach((k) => {
+      const v = searchParams.get(k);
+      if (v !== null) p.set(k, v);
+    });
+
+    router.replace(`/dashboard/ardashboard?${p.toString()}`);
     _setSelectedArtist(name);
   };
 
@@ -282,23 +291,18 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
 
                 <CardContent className="pt-2 px-2 md:px-3 md:pt-2">
                   <div
-                    className="
-          relative
-          h-[80vh] md:h-[calc(100vh-260px)]  /* ← 컨테이너를 화면 높이로 */
-          overflow-y-auto
-          snap-y snap-mandatory
-          scroll-smooth
-        "
+                    data-tour="reels"
+                    className="relative h-[80vh] md:h-[calc(100vh-260px)] overflow-y-auto
+                    snap-y snap-mandatory scroll-smooth"
                   >
                     {selectedArtistData.submissions.map((submission, idx) => (
                       <section
                         key={submission.id}
-                        className={`
-      snap-start snap-always
-      h-full flex items-center justify-center
-      p-2 md:p-3
-      ${idx !== 0 ? "border-t border-slate-200" : ""}  /* 첫 섹션 빼고 위에 선 */
-    `}
+                        className={`snap-start snap-always
+                          h-full flex items-center justify-center
+                          p-2 md:p-3
+                          ${idx !== 0 ? "border-t border-slate-200" : ""}  
+                        `}
                       >
                         <div className="grid md:grid-cols-2 gap-4 w-full max-w-4xl h-full">
                           {/* Video / Audio */}
@@ -451,6 +455,8 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
                 <li key={artist.artistName} className="min-w-0">
                   <button
                     type="button"
+                    data-tour="artist-card"
+                    data-artist={toSlug("Jackson Wang")}
                     onClick={() => setSelectedArtist(artist.artistName)}
                     className="group w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 rounded-2xl"
                   >
