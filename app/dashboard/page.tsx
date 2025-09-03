@@ -11,7 +11,7 @@ import { UserProfile } from '@/types/profile';
 import { useAuth } from "@clerk/nextjs";
 
 const Dashboard = () => {
-    //Login
+    //Login---------------------------------------------------------------------------
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const { userId, isLoaded } = useAuth();
 
@@ -173,14 +173,14 @@ const Dashboard = () => {
                                 </CardContent>
                             </Card>
 
-                            {/* Project Development */}
+                            {/* Catalog */}
                             <Card className="h-full">
                                 <CardHeader className="pb-3">
                                     <div className="w-full flex flex-wrap items-center sm:flex-nowrap sm:justify-between gap-2">
                                         <div className="flex items-center gap-2 flex-wrap">
                                             <CardTitle className="flex items-center space-x-3">
                                                 <Workflow className="h-5 w-5" />
-                                                <span>Project Development</span>
+                                                <span>Catalog</span>
                                             </CardTitle>
                                         </div>
                                     </div>

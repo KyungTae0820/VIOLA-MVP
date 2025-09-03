@@ -47,30 +47,6 @@ const ArtistDetailPage = () => {
                             </Link>
                         </div>
                     </div>
-
-                    {/* Profile Card */}
-                    <Link href="/profile">
-                        <div className="flex items-center bg-white shadow-md rounded-full px-4 py-2 space-x-3">
-                            {/* Profile Image + 88rising Logo */}
-                            <div className="relative w-12 h-12">
-                                <img
-                                    src="/assets/ryan.jpg"
-                                    alt="Ryan Chan"
-                                    className="w-12 h-12 rounded-full object-cover"
-                                />
-                                <img
-                                    src="/assets/88rising.jpg"
-                                    alt="88rising Logo"
-                                    className="absolute w-5 h-5 rounded-full object-cover bottom-0 left-0 border-2 border-white"
-                                />
-                            </div>
-                            {/* Name + Badge */}
-                            <div>
-                                <div className="font-bold text-gray-900">Ryan Chan</div>
-                                <Badge variant="ar" className="mt-1">A&R</Badge>
-                            </div>
-                        </div>
-                    </Link>
                 </div>
             </header>
 

@@ -155,7 +155,7 @@ export default function DemoSubmissionForm() {
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <User className="w-5 h-5" />
-                            Artist Information
+                            Producer or Songwriter Information
                         </CardTitle>
                         <CardDescription>
                             Tell us about yourself and your music
@@ -166,7 +166,7 @@ export default function DemoSubmissionForm() {
                             <div className="space-y-2" ref={companyBoxRef}>
                                 <Label className="flex items-center gap-2">
                                     <Building className="w-4 h-4" />
-                                    Choose a record label *
+                                    Choose a Publishing Company *
                                 </Label>
 
                                 <div className="relative">
@@ -258,7 +258,7 @@ export default function DemoSubmissionForm() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <Label htmlFor="name">Artist Name *</Label>
+                                    <Label htmlFor="name"> Name *</Label>
                                     <Input
                                         id="name"
                                         placeholder="Your stage name or real name"
