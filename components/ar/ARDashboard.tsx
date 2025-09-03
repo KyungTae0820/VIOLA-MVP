@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Badge, Input, Button, Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { AudioPlayer } from "./AudioPlayer";
 import { ArrowLeft, Search, Clock, CheckCircle, XCircle, Filter, User, Music, ChevronRight, ChevronDown } from "lucide-react";
 import ReelVideo from "@/components/ui/ReelVideo";
@@ -116,9 +115,9 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
     const p = new URLSearchParams(Array.from(searchParams.entries()));
 
     if (name) {
-      p.set("artist", name);     
+      p.set("artist", name);
     } else {
-      p.delete("artist");   
+      p.delete("artist");
     }
 
     ["demo", "embed", "tempo"].forEach((k) => {
@@ -358,7 +357,6 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
     );
   }
 
-
   const GENRE_LABELS: Record<string, string> = {
     all: "All Genres",
     pop: "Pop",
@@ -376,7 +374,7 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
   };
 
   return (
-    <div className="h-[100dvh] overflow-hidden bg-white">
+    <main className="h-[100dvh] bg-white md:fixed md:inset-x-0 md:bottom-0 md:top-[80px] md:overflow-hidden [scrollbar-gutter:stable_both-edges]">
       <div className="max-w-7xl mx-auto h-full flex min-h-0 flex-col">
         <div className="shrink-0 flex items-center justify-between mb-2">
           <Button variant="ghost" onClick={onBack} className="text-slate-600 hover:text-slate-900">
@@ -524,6 +522,6 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
           )}
         </section>
       </div>
-    </div>
+    </main>
   );
 };

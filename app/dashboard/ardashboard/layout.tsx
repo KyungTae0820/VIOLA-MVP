@@ -3,14 +3,17 @@ import Link from "next/link";
 export default function ARDashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <header className="border-b bg-white px-6 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Link href="/dashboard" className="text-4xl font-bold hover:opacity-80">VIOLA.</Link>
-          </div>
+      <header className="fixed inset-x-0 top-0 z-50 h-20 border-b bg-white">
+        <div className="h-full flex items-center justify-between px-6">
+          <Link href="/dashboard" className="text-4xl font-bold hover:opacity-80">
+            VIOLA.
+          </Link>
         </div>
       </header>
-      <main className="px-6 pt-4 pb-10">{children}</main>
+
+      <main className="fixed inset-x-0 bottom-0 top-20 bg-white overflow-hidden">
+          {children}
+      </main>
     </>
   );
 }
