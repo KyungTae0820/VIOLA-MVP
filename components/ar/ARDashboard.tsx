@@ -8,7 +8,11 @@ import { AudioPlayer } from "./AudioPlayer";
 import { ArrowLeft, Search, Clock, CheckCircle, XCircle, Filter, User, Music, ChevronRight, ChevronDown } from "lucide-react";
 import ReelVideo from "@/components/ui/ReelVideo";
 
+/* ---------------- Utils ---------------- */
+
 const toSlug = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
+
+/* ---------------- Props/Types ---------------- */
 
 interface ARDashboardProps {
   onBack: () => void;
@@ -95,6 +99,97 @@ const artistMeta: Record<string, { age?: number; ethnicity?: string; avatar?: st
   "Velvet Sound": { age: 31, ethnicity: "Latino", avatar: "/images/velvet.jpg", },
 };
 
+/* ---------------- Chat Box ---------------- */
+
+function ChatBox({ submissions }: { submissions: Submission[] }) {
+  const [prompt, setPrompt] = useState("");
+  const [results, setResults] = useState<Submission[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // 임시 추천: 키워드 매칭 기반 Top 1–5
+  const recommend = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    setLoading(true);
+    const q = prompt.trim().toLowerCase();
+
+    const ranked = submissions
+      .map((s) => {
+        const hay = [s.trackTitle, s.genre ?? "", s.description ?? ""].join(" ").toLowerCase();
+        const score =
+          (s.genre?.toLowerCase().includes(q) ? 2 : 0) +
+          (hay.includes(q) ? 1 : 0);
+        return { s, score };
+      })
+      .sort((a, b) => b.score - a.score)
+      .filter((r) => r.score > 0)
+      .slice(0, 5)
+      .map((r) => r.s);
+
+    setResults(ranked);
+    setLoading(false);
+  };
+
+  const scrollToDemo = (id: number) => {
+    const el = document.getElementById(`demo-${id}`);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <div className="mt-3">
+      <div className="rounded-xl border border-slate-200 bg-white shadow-sm p-3 text-slate-900">
+        <h4 className="font-semibold mb-2">AI Demo Finder</h4>
+
+        <form onSubmit={recommend} className="flex gap-2">
+          <input
+            className="flex-1 rounded-md border border-slate-300 bg-white
+                   px-3 py-2 text-sm text-slate-900
+                   placeholder:text-slate-400
+                   outline-none focus:ring-2 focus:ring-violet-400"
+            placeholder={`Try: "dark hip hop", "upbeat R&B", "surreal indie"`}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="rounded-md bg-violet-600 px-3 py-2 text-white text-sm
+                   hover:bg-violet-700 disabled:opacity-60"
+            disabled={!prompt.trim() || loading}
+          >
+            {loading ? "Finding..." : "Ask AI"}
+          </button>
+        </form>
+
+        {results.length > 0 && (
+          <div className="mt-3 space-y-2">
+            {results.map((r) => (
+              <button
+                key={r.id}
+                type="button"
+                onClick={() => scrollToDemo(r.id)}
+                className="w-full flex items-center justify-between rounded-lg
+                       border border-slate-200 px-3 py-2 text-left
+                       hover:bg-neutral-50"
+              >
+                <div className="min-w-0">
+                  <div className="truncate font-medium">{r.trackTitle}</div>
+                  <div className="text-xs text-slate-500">{r.genre}</div>
+                </div>
+                <span className="text-xs font-semibold text-violet-700">View</span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {results.length === 0 && !loading && (
+          <p className="mt-2 text-xs text-slate-600">
+            Enter a genre, mood, or vibe, and up to 5 matching demos will be shown.
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- Component ---------------- */
 
 export const ARDashboard = ({ onBack }: ARDashboardProps) => {
@@ -113,18 +208,12 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
 
   const setSelectedArtist = (name: string | null) => {
     const p = new URLSearchParams(Array.from(searchParams.entries()));
-
-    if (name) {
-      p.set("artist", name);
-    } else {
-      p.delete("artist");
-    }
-
+    if (name) p.set("artist", name);
+    else p.delete("artist");
     ["demo", "embed", "tempo"].forEach((k) => {
       const v = searchParams.get(k);
       if (v !== null) p.set(k, v);
     });
-
     router.replace(`/dashboard/ardashboard?${p.toString()}`);
     _setSelectedArtist(name);
   };
@@ -184,17 +273,18 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
     }
   };
 
-
   const [infoOpen, setInfoOpen] = useState(true);
   useEffect(() => {
     if (typeof window !== "undefined" && window.innerWidth >= 768) setInfoOpen(true);
   }, []);
 
+  /* ---------- Detail Page (Artist Selected) ---------- */
+
   if (selectedArtist && selectedArtistData) {
     return (
       <div className="min-h-screen bg-white px-6">
         <div className="max-w-7xl mx-auto">
-          {/* 헤더 */}
+          {/* Header */}
           <div className="flex items-center justify-between mb-3">
             <Button variant="ghost" onClick={() => setSelectedArtist(null)} className="text-slate-600 hover:text-slate-900">
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -213,8 +303,8 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
           </div>
 
           <div className="grid md:grid-cols-12 gap-6">
-            {/* LEFT: Artist Info (sticky) */}
-            <div className="md:col-span-4">
+            {/* LEFT: Artist Info (sticky) + ChatBox */}
+            <div className="order-1 md:order-none md:col-span-4">
               <Card className="relative shadow-lg overflow-hidden min-h-[144px] md:sticky md:top-4">
                 <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#FDE68A]" />
                 <div className="pointer-events-none absolute inset-0 z-0 sm:bg-[radial-gradient(900px_300px_at_65%_50%,rgba(255,255,255,0.30),transparent)] md:bg-[radial-gradient(1200px_360px_at_80%_50%,rgba(255,255,255,0.30),transparent)]" />
@@ -273,13 +363,16 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
                         </div>
                       </div>
                     </div>
+
+                    {/* ▼ AI Chat Box (Contact Info 아래) */}
+                    <ChatBox submissions={selectedArtistData.submissions} />
                   </div>
                 </CardContent>
               </Card>
             </div>
 
-            {/* RIGHT: Reels feed */}
-            <div className="md:col-span-8">
+            {/* RIGHT: Reels feed (Demos) */}
+            <div className="order-3 md:order-none md:col-span-8">
               <Card className="shadow-lg border-slate-200 bg-white">
                 <CardHeader className="pb-1">
                   <CardTitle className="flex items-center gap-2 text-base md:text-lg">
@@ -296,6 +389,7 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
                   >
                     {selectedArtistData.submissions.map((submission, idx) => (
                       <section
+                        id={`demo-${submission.id}`}
                         key={submission.id}
                         className={`snap-start snap-always
                           h-full flex items-center justify-center
@@ -356,6 +450,8 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
       </div>
     );
   }
+
+  /* ---------- List Page (Artist Grid) ---------- */
 
   const GENRE_LABELS: Record<string, string> = {
     all: "All Genres",
@@ -445,7 +541,7 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
           </CardContent>
         </Card>
 
-        {/* Artist Profiles Grid – bigger cards + vertical details */}
+        {/* Artist Profiles Grid */}
         <section className="flex-1 min-h-0 overflow-auto overscroll-contain pr-1">
           {filteredArtists.length > 0 ? (
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-10">
