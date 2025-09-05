@@ -70,33 +70,11 @@ const mockSubmissions: Submission[] = [
     description: "Raw storytelling over boom-bap beats. A tribute to underground hip hop culture.",
     socialMedia: "@bignaughtyboi", submittedAt: "2024-01-14", status: "approved", audioSrc: "/api/placeholder-audio", videoSrc: "https://www.youtube.com/watch?v=WxM0qO29RM8"
   },
-  {
-    id: 5, artistName: "Indie Rose", trackTitle: "Sunset Drive", genre: "Indie", email: "rose@email.com",
-    description: "Nostalgic indie rock anthem perfect for summer road trips. Guitar-driven with heartfelt vocals.",
-    socialMedia: "@indierose", submittedAt: "2024-01-13", status: "rejected", audioSrc: "/api/placeholder-audio"
-  },
-  {
-    id: 6, artistName: "Velvet Sound", trackTitle: "Golden Hour", genre: "R&B", email: "velvet@email.com",
-    description: "Smooth R&B with soulful vocals and rich harmonies. A love song that captures the magic of golden hour.",
-    socialMedia: "velvetsound.com", submittedAt: "2024-01-12", status: "pending", audioSrc: "/api/placeholder-audio"
-  },
-  {
-    id: 7, artistName: "Velvet Sound", trackTitle: "Midnight Groove", genre: "R&B", email: "velvet@email.com",
-    description: "Sultry late-night R&B track with jazz influences and silky smooth production.",
-    socialMedia: "velvetsound.com", submittedAt: "2024-01-05", status: "approved", audioSrc: "/api/placeholder-audio"
-  },
-  {
-    id: 8, artistName: "Velvet Sound", trackTitle: "City Lights", genre: "R&B", email: "velvet@email.com",
-    description: "Modern R&B with electronic elements. A celebration of urban nightlife and romance.",
-    socialMedia: "velvetsound.com", submittedAt: "2024-01-02", status: "pending", audioSrc: "/api/placeholder-audio"
-  },
 ];
 
 const artistMeta: Record<string, { age?: number; ethnicity?: string; avatar?: string }> = {
   "Jackson Wang": { age: 31, ethnicity: "Chinese", avatar: "/assets/jacksonwang.jpg", },
   "Big Naughty": { age: 22, ethnicity: "Korean", avatar: "/assets/bignaughty.jpg", },
-  "Indie Rose": { age: 27, ethnicity: "Chinese", avatar: "/images/indie.jpg", },
-  "Velvet Sound": { age: 31, ethnicity: "Latino", avatar: "/images/velvet.jpg", },
 };
 
 /* ---------------- Chat Box ---------------- */
@@ -137,8 +115,7 @@ function ChatBox({ submissions }: { submissions: Submission[] }) {
   return (
     <div className="mt-3">
       <div className="rounded-xl border border-slate-200 bg-white shadow-sm p-3 text-slate-900">
-        <h4 className="font-semibold mb-2">AI Demo Finder</h4>
-
+        <h4 className="font-semibold mb-2">Ask VIOLA</h4>
         <form onSubmit={recommend} className="flex gap-2">
           <input
             className="flex-1 rounded-md border border-slate-300 bg-white
@@ -182,7 +159,7 @@ function ChatBox({ submissions }: { submissions: Submission[] }) {
 
         {results.length === 0 && !loading && (
           <p className="mt-2 text-xs text-slate-600">
-            Enter a genre, mood, or vibe, and up to 5 matching demos will be shown.
+            Enter a genre, mood, or vibe, and the demos will be ranked from best to worst fit
           </p>
         )}
       </div>
