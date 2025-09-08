@@ -469,10 +469,10 @@ const Dashboard = () => {
                                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400"
                                             >
                                                 <Avatar className="h-10 w-10">
-                                                    <AvatarImage src="/assets/jacksonwang.jpg" />
+                                                    <AvatarImage src="/assets/heresi.jpg" />
                                                     <AvatarFallback>JW</AvatarFallback>
                                                 </Avatar>
-                                                <span className="font-medium text-neutral-800">Jackson Wang</span>
+                                                <span className="font-medium text-neutral-800">Heresi</span>
                                             </div>
                                         </Link>
                                     </div>

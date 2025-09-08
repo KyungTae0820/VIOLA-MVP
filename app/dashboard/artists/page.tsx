@@ -43,24 +43,27 @@ export default function ArtistDetailPage() {
                     <h2 className="text-2xl font-bold mb-6">Your Artists</h2>
                     <div className="bg-card rounded-xl p-6 border">
                         <div className="flex items-start gap-4">
-                            <img src="/assets/jacksonwang.jpg" alt="Jackson Wang"
+                            <img src="/assets/heresi.jpg" alt="Heresi"
                                 className="w-28 h-28 md:w-50 md:h-50 rounded-full object-cover" />
                             <div className="flex-1">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <h3 className="text-2xl md:text-3xl font-bold">Jackson Wang</h3>
-                                    <img src="/assets/88rising.jpg" alt="88rising"
-                                        className="h-10 w-10 md:h-16 md:w-16 ml-2 object-cover rounded-full" />
+                                    <h3 className="text-2xl md:text-3xl font-bold">Heresi</h3>
+                                    {/* <img src="/assets/88rising.jpg" alt="88rising"
+                                        className="h-10 w-10 md:h-16 md:w-16 ml-2 object-cover rounded-full" /> */}
                                 </div>
                                 <div className="flex items-center gap-2 mb-3">
                                     <Badge variant="artist">Artist</Badge>
-                                    <a href="https://open.spotify.com/artist/1kfWoWgCugPkyxQP8lkRlY"
+                                    <a href="https://open.spotify.com/artist/3qPFPc3haFWgSUty6yT67l"
                                         target="_blank" rel="noopener noreferrer"
                                         className="text-muted-foreground hover:underline hover:text-green-600 transition">
-                                        @jacksonwang
+                                        @heresi
                                     </a>
                                 </div>
                                 <p className="text-sm text-muted-foreground mb-4">
-                                    Jackson Wang, born in Hong Kong, is a solo artist at 88Rising and also part of the Korean boy band GOT7...
+                                    Heresi is a singer–producer crafting hazy, mood-driven songs where minimal drums, 
+                                    layered synths, and intimate vocals meet. Blending R&B grooves with electronic/alt-pop textures, 
+                                    Heresi turns night-time cityscapes and fragmented memories into cinematic, slow-burn melodies. On stage, 
+                                    sampler-driven performances and live looping bring studio detail to life, leaving a quiet yet resonant afterglow.
                                     <Edit3 className="inline-block w-3 h-3 ml-1" />
                                 </p>
                                 <div>
@@ -71,9 +74,9 @@ export default function ArtistDetailPage() {
                                     <div className="flex gap-2">
                                         {[1, 2, 3].map(i => (
                                             <div key={i} className="relative w-10 h-10 md:w-12 md:h-12">
-                                                <img src="/assets/ryan.jpg" alt={`Contact ${i}`} className="w-full h-full rounded-full object-cover" />
-                                                <img src="/assets/88rising.jpg" alt="88rising Logo"
-                                                    className="absolute w-4 h-4 md:w-5 md:h-5 rounded-full object-cover bottom-0 left-0 border-2 border-white" />
+                                                <img src="/assets/defaultimg.jpg" alt={`Contact ${i}`} className="w-full h-full rounded-full object-cover" />
+                                                {/* <img src="/assets/88rising.jpg" alt="88rising Logo"
+                                                    className="absolute w-4 h-4 md:w-5 md:h-5 rounded-full object-cover bottom-0 left-0 border-2 border-white" /> */}
                                             </div>
                                         ))}
                                     </div>
@@ -97,10 +100,10 @@ export default function ArtistDetailPage() {
                         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-2 gap-3">
                             {[1, 2, 3, 4].map(i => (
                                 <a key={i}
-                                    href="https://open.spotify.com/artist/1kfWoWgCugPkyxQP8lkRlY"
+                                    href="https://open.spotify.com/artist/3qPFPc3haFWgSUty6yT67l"
                                     target="_blank" rel="noopener noreferrer"
                                     className="block rounded-lg overflow-hidden">
-                                    <img src={`/assets/album-${i}.jpg`} alt={`Album ${i}`}
+                                    <img src={`/assets/heresi.jpg`} alt={`Album ${i}`}
                                         className="w-full aspect-square object-cover" />
                                 </a>
                             ))}

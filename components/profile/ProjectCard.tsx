@@ -12,7 +12,7 @@ export const ProjectCard = ({ projectName, type, progress }: ProjectCardProps) =
     <div className="flex items-center justify-between p-4 bg-card rounded-lg border">
       <div className="flex items-center gap-3">
         <img 
-          src="/assets/jacksonwang.jpg"
+          src="/assets/heresi.jpg"
           alt="Project" 
           className="w-10 h-10 rounded-full object-cover"
         />
