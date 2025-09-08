@@ -404,16 +404,18 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
                               <p className="text-slate-600 text-xs">Submitted: {submission.submittedAt}</p>
                             </div>
                             <p className="text-sm leading-relaxed text-slate-700">{submission.description}</p>
-                            {submission.status === "pending" && (
-                              <div className="flex gap-2 pt-1">
-                                <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                                  <CheckCircle className="w-4 h-4 mr-1" /> Approve
-                                </Button>
-                                <Button size="sm" variant="destructive">
-                                  <XCircle className="w-4 h-4 mr-1" /> Reject
-                                </Button>
-                              </div>
-                            )}
+                            <div className="flex gap-2 pt-1">
+                              <Button
+                                size="sm"
+                                className="bg-white text-slate-900 border border-slate-300
+                                            hover:bg-slate-50 hover:border-slate-400
+                                            shadow-sm hover:shadow
+                                            focus-visible:outline-none focus-visible:ring-2
+                                            focus-visible:ring-slate-400 focus-visible:ring-offset-2">
+                                <CheckCircle className="w-4 h-4 mr-1" />
+                                Download
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </section>
