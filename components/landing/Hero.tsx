@@ -61,7 +61,7 @@ const Hero = ({ onStartDemo }: HeroProps) => {
                 </div>
             </div>
 
-            <p className="relative z-30 text-xl text-white font-light leading-relaxed max-w-2xl mx-auto mt-10">
+            <p className="relative z-30 mt-10 max-w-2xl w-full px-6 text-center text-white text-xl font-light leading-relaxed self-center">
                 Built For Visionaries. Trusted by Established Indie Labels
             </p>
 
