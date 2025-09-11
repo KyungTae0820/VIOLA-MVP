@@ -56,16 +56,21 @@ const Features = () => {
                     <div className="order-1">
                         <Card className="border border-gray-200">
                             <CardContent className="p-0">
-                                <div className="relative aspect-video bg-gray-50 overflow-hidden">
-                                    <Row2CatalogDemo autoRun/> 
+                                <div
+                                    className="relative bg-gray-50 overflow-hidden
+                                                min-h-[480px] sm:min-h-[560px]     
+                                                md:min-h-0 md:aspect-video" >
+                                    <div className="absolute inset-0">
+                                        <Row2CatalogDemo autoRun className="h-full w-full" />
+                                        {/* Row2CatalogDemo가 className 받도록 2번 수정 */}
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>
                     </div>
-                    <div className="order-2 md:pl-8 text-left">
-                        <h3 className="text-2xl md:text-3xl font-semibold text-gray-900">
-                            Filter Your Catalog
-                        </h3>
+
+                    <div className="order-2 md:pl-8 text-left mt-6 md:mt-0">
+                        <h3 className="text-2xl md:text-3xl font-semibold text-gray-900">Filter Your Catalog</h3>
                         <p className="mt-4 text-base md:text-lg text-gray-700 leading-relaxed">
                             Our trained AI model evaluates and ranks demo submissions based on
                             compatibility and alignment with the label’s vision.

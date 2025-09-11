@@ -11,21 +11,19 @@ function GenreTag({
     children: React.ReactNode;
     tone?: "light" | "dark";
 }) {
-    const base =
-        "inline-flex items-center rounded-full px-3 py-1 text-[14px] font-semibold";
-    const style =
-        tone === "dark"
-            ? "bg-black text-white"
-            : "bg-slate-100 text-slate-800";
+    const base = "inline-flex items-center rounded-full px-3 py-1 text-[14px] font-semibold";
+    const style = tone === "dark" ? "bg-black text-white" : "bg-slate-100 text-slate-800";
     return <span className={`${base} ${style}`}>{children}</span>;
 }
 
 export default function Row2CatalogDemo({
     autoRun = true,
     loop = true,
+    className = "",
 }: {
     autoRun?: boolean;
     loop?: boolean;
+    className?: string;
 }) {
     const [openAll, setOpenAll] = useState(false);
     const [query, setQuery] = useState("");
@@ -47,7 +45,9 @@ export default function Row2CatalogDemo({
     useEffect(() => {
         aliveRef.current = true;
         if (autoRun) runLoop();
-        return () => { aliveRef.current = false; };
+        return () => {
+            aliveRef.current = false;
+        };
     }, []);
 
     const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -112,17 +112,11 @@ export default function Row2CatalogDemo({
     }
 
     return (
-        <div className="relative aspect-video w-full bg-white rounded-xl shadow-sm ring-1 ring-black/10 overflow-hidden">
+        <div className={`relative h-full w-full bg-white rounded-xl shadow-sm ring-1 ring-black/10 overflow-hidden ${className}`}>
             <div className="h-10 px-3 flex items-center justify-between bg-white/90 backdrop-blur border-b">
                 <div className="font-semibold tracking-wide text-slate-800 flex items-center gap-2">
-                    <span className="text-slate-600">VIOLA</span><span className="text-slate-400">•</span><span>Catalog</span>
+                    <span className="text-slate-600">VIOLA</span>
                 </div>
-                <button
-                    ref={viewAllBtnRef}
-                    className="text-[12px] px-3 py-1 rounded-md bg-white shadow-sm ring-1 ring-black/10 hover:bg-slate-50"
-                >
-                    View All
-                </button>
             </div>
 
             <div className="absolute inset-x-0 bottom-0 top-10 grid grid-cols-12">
@@ -136,7 +130,12 @@ export default function Row2CatalogDemo({
                             <div className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                 <ListMusic className="w-4 h-4" /> Catalog
                             </div>
-                            <div className="text-xs text-slate-500">Hip Hop • Upbeat Pop</div>
+                            <button
+                                ref={viewAllBtnRef}
+                                className="text-[12px] px-3 py-1 rounded-md bg-white shadow-sm ring-1 ring-black/10 hover:bg-slate-50"
+                            >
+                                View All
+                            </button>
                         </div>
                         <div className="relative h-[calc(100%-2.25rem)] overflow-hidden">
                             <motion.div animate={listControls} className="absolute inset-x-0 top-0 space-y-2 p-3">
@@ -167,8 +166,10 @@ export default function Row2CatalogDemo({
             <AnimatePresence>
                 {isPlaying && (
                     <motion.div
-                        initial={{ y: 90, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 90, opacity: 0 }} transition={{ duration: 0.45, ease: "easeOut" }}
+                        initial={{ y: 90, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 90, opacity: 0 }}
+                        transition={{ duration: 0.45, ease: "easeOut" }}
                         className="absolute left-0 right-0 bottom-0 z-[50] h-16 bg-white/95 backdrop-blur border-t flex items-center px-4 gap-3"
                     >
                         <img src="/assets/heresi.jpg" alt="thumb" className="w-8 h-8 rounded object-cover ring-1 ring-black/10" />
@@ -176,16 +177,28 @@ export default function Row2CatalogDemo({
                             <div className="text-[12px] font-medium text-slate-800">DEAR HANNA</div>
                             <div className="text-[11px] text-slate-500">Heresi • Hip Hop</div>
                         </div>
-                        <button className="p-2 rounded hover:bg-slate-100"><Play className="w-4 h-4" /></button>
-                        <button className="p-2 rounded hover:bg-slate-100"><Pause className="w-4 h-4" /></button>
+                        <button className="p-2 rounded hover:bg-slate-100">
+                            <Play className="w-4 h-4" />
+                        </button>
+                        <button className="p-2 rounded hover:bg-slate-100">
+                            <Pause className="w-4 h-4" />
+                        </button>
                         <div className="mx-3 w-[32%]">
                             <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
-                                <motion.div key={Number(isPlaying)} initial={{ width: "0%" }} animate={{ width: "60%" }} transition={{ duration: 2.8, ease: "linear" }} className="h-full bg-violet-500" />
+                                <motion.div
+                                    key={Number(isPlaying)}
+                                    initial={{ width: "0%" }}
+                                    animate={{ width: "60%" }}
+                                    transition={{ duration: 2.8, ease: "linear" }}
+                                    className="h-full bg-violet-500"
+                                />
                             </div>
                             <div className="text-[10px] text-slate-500 mt-1 text-center">0:03 — 3:15</div>
                         </div>
                         <div className="w-24">
-                            <div className="h-1 bg-slate-200 rounded-full overflow-hidden"><div className="h-full w-[70%] bg-violet-500" /></div>
+                            <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
+                                <div className="h-full w-[70%] bg-violet-500" />
+                            </div>
                         </div>
                     </motion.div>
                 )}
@@ -195,7 +208,9 @@ export default function Row2CatalogDemo({
                 {openAll && (
                     <motion.div
                         className="absolute inset-0 z-[60] bg-black/25 backdrop-blur-[2px] flex items-start justify-end p-4 md:p-6"
-                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                     >
                         <motion.div
                             initial={{ x: 20, opacity: 0, scale: 0.98 }}
@@ -226,7 +241,8 @@ export default function Row2CatalogDemo({
                                 {SEARCH_RESULTS(query).map((t) => (
                                     <div
                                         key={t}
-                                        className={`flex items-center gap-3 rounded-lg border p-3 bg-white ${t === "DEAR HANNA" && query.trim() ? "ring-2 ring-violet-300" : ""}`}
+                                        className={`flex items-center gap-3 rounded-lg border p-3 bg-white ${t === "DEAR HANNA" && query.trim() ? "ring-2 ring-violet-300" : ""
+                                            }`}
                                     >
                                         <img src="/assets/heresi.jpg" alt="thumb" className="w-10 h-10 rounded object-cover ring-1 ring-black/10" />
                                         <div className="flex-1">
@@ -241,7 +257,10 @@ export default function Row2CatalogDemo({
                                 ))}
                             </div>
                             <div className="p-4 border-t flex justify-end">
-                                <button onClick={() => setOpenAll(false)} className="text-sm px-3 py-1.5 rounded-md bg-white shadow-sm ring-1 ring-black/10 hover:bg-slate-50">
+                                <button
+                                    onClick={() => setOpenAll(false)}
+                                    className="text-sm px-3 py-1.5 rounded-md bg-white shadow-sm ring-1 ring-black/10 hover:bg-slate-50"
+                                >
                                     Close
                                 </button>
                             </div>
