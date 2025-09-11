@@ -48,7 +48,7 @@ const Hero = ({ onStartDemo }: HeroProps) => {
                     </Button>
 
                     <div className="text-md opacity-75">
-                        <p>$39/mo or $239/yr. Cancel Anytime.</p>
+                        <p>$39.99/mo or $239.99/yr. Cancel Anytime.</p>
                     </div>
                 </div>
             </div>
