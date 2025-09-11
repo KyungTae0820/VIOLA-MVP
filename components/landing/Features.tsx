@@ -3,7 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from "@/components/ui/card";
 import AutoSubmitDemo from "@/components/animation/AutoSubmitDemo";
-import ScaledIframe from '../animation/ScaledIframe';
+import DashboardAnimation from '@/components/animation/DashboardAnimation';
+import Row2CatalogDemo from '../animation/CatalogGuidedDemo';
 
 const Features = () => {
     const router = useRouter();
@@ -43,7 +44,7 @@ const Features = () => {
                         <Card className="border border-gray-200">
                             <CardContent className="p-0">
                                 <div className="relative aspect-video bg-gray-50">
-                                    <AutoSubmitDemo preview demoMode shrink={0.72} autoScroll />
+                                    <AutoSubmitDemo preview demoMode shrink={0.72} autoScroll interactive={false} />
                                 </div>
                             </CardContent>
                         </Card>
@@ -56,14 +57,7 @@ const Features = () => {
                         <Card className="border border-gray-200">
                             <CardContent className="p-0">
                                 <div className="relative aspect-video bg-gray-50 overflow-hidden">
-                                    <iframe
-                                        className="absolute inset-0 h-full w-full"
-                                        src="https://www.youtube-nocookie.com/embed/PRZrHzhpBpw?rel=0&modestbranding=1&playsinline=1"
-                                        title="Viola demo"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        referrerPolicy="strict-origin-when-cross-origin"
-                                        allowFullScreen
-                                    />
+                                    <Row2CatalogDemo autoRun/> 
                                 </div>
                             </CardContent>
                         </Card>
@@ -83,28 +77,17 @@ const Features = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
                     <div className="order-2 md:order-1 text-left md:pr-8">
                         <h3 className="text-2xl md:text-3xl font-semibold text-gray-900">
-                            All-in-One Dashhboard
+                            All-in-One Dashboard
                         </h3>
                         <p className="mt-4 text-base md:text-lg text-gray-700 leading-relaxed">
-                            Never miss a beat in the scouting process through our all-in-one dashboard. Centralize reviewing demos, contacting, and finalizing contracts all-in-one place.
+                            Never miss a beat in the scouting process through our all-in-one dashboard.
+                            Centralize reviewing demos, contacting, and finalizing contracts all-in-one place.
                         </p>
                     </div>
                     <div className="order-1 md:order-2">
-                        <Card className="border border-gray-200">
-                            <CardContent className="p-0">
-                                <div className="relative aspect-video flex items-center justify-center bg-gray-50">
-                                    <ScaledIframe
-                                        src="/dashboard?demo=1&embed=1" 
-                                        width={1280}
-                                        height={800}
-                                        rounded="rounded-xl"
-                                    />
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <DashboardAnimation />
                     </div>
                 </div>
-
             </div>
         </section>
     );

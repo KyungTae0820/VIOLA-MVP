@@ -45,11 +45,13 @@ export default function AutoSubmitDemo({
     preview = false,
     shrink = 0.75,
     autoScroll = true,
+    interactive = false, 
 }: {
     demoMode?: boolean;
     preview?: boolean;
     shrink?: number;
     autoScroll?: boolean;
+    interactive?: boolean; 
 }) {
     const { toast } = useToast();
     const [formData, setFormData] = useState<FormData>({
@@ -59,7 +61,7 @@ export default function AutoSubmitDemo({
         company: "",
         spotifyUrl: "",
         instagramHandle: "",
-        demos: []
+        demos: [],
     });
 
     const [labelQuery, setLabelQuery] = useState("");
@@ -82,11 +84,9 @@ export default function AutoSubmitDemo({
         return companies.filter((c) => c.toLowerCase().includes(q));
     }, [labelQuery]);
 
-    const noMatches = showList && labelQuery.trim().length > 0 && filteredCompanies.length === 0;
-
     const handleInputChange = (field: keyof FormData, value: string) => {
         if (demoMode) return;
-        setFormData(prev => ({ ...prev, [field]: value }));
+        setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +96,7 @@ export default function AutoSubmitDemo({
             toast({ title: "Too many files", description: "Please select up to 10 demo files only.", variant: "destructive" });
             return;
         }
-        setFormData(prev => ({ ...prev, demos: files }));
+        setFormData((prev) => ({ ...prev, demos: files }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -139,7 +139,7 @@ export default function AutoSubmitDemo({
     useEffect(() => {
         if (!demoMode) return;
         setLabelQuery("VIOLA");
-        setFormData(p => ({ ...p, company: "VIOLA" }));
+        setFormData((p) => ({ ...p, company: "VIOLA" }));
     }, [demoMode, loopKey]);
 
     const display = {
@@ -148,7 +148,7 @@ export default function AutoSubmitDemo({
         genre: demoMode ? (showGenre ? demoGenre : "") : formData.genre,
         spotifyUrl: demoMode ? demoSpotify : formData.spotifyUrl,
         instagramHandle: demoMode ? demoInsta : formData.instagramHandle,
-        demosCount: demoMode ? (phase === "files" || phase === "press" || phase === "done" ? 1 : 0) : formData.demos.length
+        demosCount: demoMode ? (phase === "files" || phase === "press" || phase === "done" ? 1 : 0) : formData.demos.length,
     };
 
     useEffect(() => {
@@ -157,7 +157,10 @@ export default function AutoSubmitDemo({
         const t1 = setTimeout(() => setPhase("files"), 6000);
         const t2 = setTimeout(() => setPhase("press"), 7000);
         const t3 = setTimeout(() => setPhase("done"), 8000);
-        const t4 = setTimeout(() => { setLoopKey(k => k + 1); setPhase("typing"); }, 7800);
+        const t4 = setTimeout(() => {
+            setLoopKey((k) => k + 1);
+            setPhase("typing");
+        }, 7800);
         return () => [g, t1, t2, t3, t4].forEach(clearTimeout);
     }, [demoMode, loopKey]);
 
@@ -193,22 +196,22 @@ export default function AutoSubmitDemo({
 
                 const elRect = el.getBoundingClientRect();
                 const filesRect = files.getBoundingClientRect();
-                const submitRect = submit.getBoundingClientRect();
-                const viewportH = elRect.height;
-                const bottomPad = 160; 
-                const topPad = 12;
+                theSubmit: {
+                    const submitRect = submit.getBoundingClientRect();
+                    const viewportH = elRect.height;
+                    const bottomPad = 160;
+                    const topPad = 12;
 
-                const wantSubmitTop =
-                    el.scrollTop + (submitRect.bottom - elRect.top) - (viewportH - bottomPad);
-                const wantFilesTop = el.scrollTop + (filesRect.top - elRect.top) - topPad;
-                const top = Math.min(Math.max(wantSubmitTop, 0), wantFilesTop);
+                    const wantSubmitTop = el.scrollTop + (submitRect.bottom - elRect.top) - (viewportH - bottomPad);
+                    const wantFilesTop = el.scrollTop + (filesRect.top - elRect.top) - topPad;
+                    const top = Math.min(Math.max(wantSubmitTop, 0), wantFilesTop);
 
-                el.scrollTo({ top, behavior: "smooth" });
+                    el.scrollTo({ top, behavior: "smooth" });
+                }
             }, delay);
             timeouts.push(id);
         };
 
-        // 초기 위치 리셋
         el.scrollTo({ top: 0, behavior: "auto" });
         scrollToViewTop("#sec-genre", 3000, -140);
         scrollFilesAndSubmitTogether(5200);
@@ -216,7 +219,7 @@ export default function AutoSubmitDemo({
         return () => timeouts.forEach(clearTimeout);
     }, [preview, autoScroll, loopKey]);
 
-    // Body
+    // 본문
     const Body = (
         <div className={preview ? "min-h-[900px] bg-background py-12 px-4" : "min-h-screen bg-background py-12 px-4"} id="sec-root">
             <div className="max-w-2xl mx-auto">
@@ -238,7 +241,6 @@ export default function AutoSubmitDemo({
 
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            {/* 레이블 선택 */}
                             <div className="space-y-2" ref={companyBoxRef}>
                                 <Label className="flex items-center gap-2">
                                     <Building className="w-4 h-4" />
@@ -285,7 +287,9 @@ export default function AutoSubmitDemo({
                                         )}
                                         <button
                                             type="button"
-                                            onClick={() => { if (!demoMode) setShowList((s) => !s); }}
+                                            onClick={() => {
+                                                if (!demoMode) setShowList((s) => !s);
+                                            }}
                                             className="p-1 rounded hover:bg-gray-100"
                                             aria-label="Toggle label list"
                                             title="Show all labels"
@@ -320,8 +324,13 @@ export default function AutoSubmitDemo({
                                 )}
 
                                 {!formData.company && (
-                                    <p className={`text-xs ${(!demoMode && (showList && labelQuery.trim() && filteredCompanies.length === 0)) ? "text-red-600" : "text-orange-600"}`}>
-                                        {(!demoMode && (showList && labelQuery.trim() && filteredCompanies.length === 0))
+                                    <p
+                                        className={`text-xs ${!demoMode && showList && labelQuery.trim() && filteredCompanies.length === 0
+                                                ? "text-red-600"
+                                                : "text-orange-600"
+                                            }`}
+                                    >
+                                        {!demoMode && showList && labelQuery.trim() && filteredCompanies.length === 0
                                             ? "No labels found. Try another keyword."
                                             : "* Type or open the list, then pick one."}
                                     </p>
@@ -331,7 +340,14 @@ export default function AutoSubmitDemo({
                             <div className={preview ? "grid grid-cols-2 gap-6" : "grid grid-cols-1 md:grid-cols-2 gap-6"}>
                                 <div className="space-y-2" id="sec-name">
                                     <Label htmlFor="name">Artist Name *</Label>
-                                    <Input id="name" placeholder="Your stage name or real name" value={display.name} readOnly={demoMode} onChange={(e) => handleInputChange("name", e.target.value)} required />
+                                    <Input
+                                        id="name"
+                                        placeholder="Your stage name or real name"
+                                        value={display.name}
+                                        readOnly={demoMode}
+                                        onChange={(e) => handleInputChange("name", e.target.value)}
+                                        required
+                                    />
                                 </div>
 
                                 <div className="space-y-2" id="sec-age">
@@ -339,7 +355,17 @@ export default function AutoSubmitDemo({
                                         <Calendar className="w-4 h-4" />
                                         Age *
                                     </Label>
-                                    <Input id="age" type="number" placeholder="Your age" value={display.age} readOnly={demoMode} onChange={(e) => handleInputChange("age", e.target.value)} required min="13" max="100" />
+                                    <Input
+                                        id="age"
+                                        type="number"
+                                        placeholder="Your age"
+                                        value={display.age}
+                                        readOnly={demoMode}
+                                        onChange={(e) => handleInputChange("age", e.target.value)}
+                                        required
+                                        min="13"
+                                        max="100"
+                                    />
                                 </div>
                             </div>
 
@@ -350,7 +376,11 @@ export default function AutoSubmitDemo({
                                         <SelectValue placeholder="Select your primary genre" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {genres.map((g) => (<SelectItem key={g} value={g}>{g}</SelectItem>))}
+                                        {genres.map((g) => (
+                                            <SelectItem key={g} value={g}>
+                                                {g}
+                                            </SelectItem>
+                                        ))}
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -361,7 +391,13 @@ export default function AutoSubmitDemo({
                                         <Globe className="w-4 h-4" />
                                         Spotify URL
                                     </Label>
-                                    <Input id="spotify" placeholder="https://open.spotify.com/artist/..." value={display.spotifyUrl} readOnly={demoMode} onChange={(e) => handleInputChange("spotifyUrl", e.target.value)} />
+                                    <Input
+                                        id="spotify"
+                                        placeholder="https://open.spotify.com/artist/..."
+                                        value={display.spotifyUrl}
+                                        readOnly={demoMode}
+                                        onChange={(e) => handleInputChange("spotifyUrl", e.target.value)}
+                                    />
                                 </div>
 
                                 <div className="space-y-2">
@@ -369,7 +405,13 @@ export default function AutoSubmitDemo({
                                         <Instagram className="w-4 h-4" />
                                         Instagram Handle
                                     </Label>
-                                    <Input id="instagram" placeholder="@yourusername" value={display.instagramHandle} readOnly={demoMode} onChange={(e) => handleInputChange("instagramHandle", e.target.value)} />
+                                    <Input
+                                        id="instagram"
+                                        placeholder="@yourusername"
+                                        value={display.instagramHandle}
+                                        readOnly={demoMode}
+                                        onChange={(e) => handleInputChange("instagramHandle", e.target.value)}
+                                    />
                                 </div>
                             </div>
 
@@ -389,12 +431,14 @@ export default function AutoSubmitDemo({
                                     </Label>
                                     <motion.div
                                         initial={{ opacity: 0, y: 8 }}
-                                        animate={{ opacity: (phase === "files" || phase === "press" || phase === "done") ? 1 : 0, y: (phase === "files" || phase === "press" || phase === "done") ? 0 : 8 }}
+                                        animate={{ opacity: phase === "files" || phase === "press" || phase === "done" ? 1 : 0, y: phase === "files" || phase === "press" || phase === "done" ? 0 : 8 }}
                                         transition={{ type: "spring", stiffness: 320, damping: 30, delay: 0.1 }}
                                         className="mt-3 inline-flex items-center gap-2 rounded-lg border border-black/10 bg-white px-3 py-2 text-slate-900 shadow-sm"
                                         aria-hidden
                                     >
-                                        <svg width="16" height="16" viewBox="0 0 24 24" className="opacity-70"><path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6" /></svg>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" className="opacity-70">
+                                            <path fill="currentColor" d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6" />
+                                        </svg>
                                         Orion_Demo.wav
                                     </motion.div>
                                 </div>
@@ -419,8 +463,42 @@ export default function AutoSubmitDemo({
         </div>
     );
 
-    /* ===== 반환: 프리뷰 모드일 때는 축소 + 내부 스크롤 컨테이너 ===== */
     if (preview) {
+        const content = (
+            <div style={{ transform: `scale(${shrink})`, transformOrigin: "top center" }}>
+                {Body}
+            </div>
+        );
+
+        if (!interactive) {
+            return (
+                <div
+                    className="h-full w-full overflow-hidden relative"
+                    aria-label="Demo preview (non-interactive)"
+                    onFocusCapture={(e) => {
+                        (e.target as HTMLElement).blur();
+                        e.preventDefault();
+                    }}
+                >
+                    <div className="absolute inset-0 z-10 cursor-not-allowed" role="presentation" />
+
+                    <div
+                        ref={scrollRef}
+                        className="h-full w-full overflow-y-auto scroll-smooth pointer-events-none select-none"
+                        style={{
+                            WebkitUserSelect: "none",
+                            userSelect: "none",
+                            touchAction: "none",
+                            WebkitOverflowScrolling: "touch",
+                            paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 100px)",
+                        }}
+                    >
+                        {content}
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="h-full w-full overflow-hidden">
                 <div
@@ -431,9 +509,7 @@ export default function AutoSubmitDemo({
                         paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 100px)",
                     }}
                 >
-                    <div style={{ transform: `scale(${shrink})`, transformOrigin: "top center" }}>
-                        {Body}
-                    </div>
+                    {content}
                 </div>
             </div>
         );
