@@ -63,12 +63,12 @@ const mockArtists: Array<{
   avatar?: string;
 }> = [
     {
-      artistName: "Jackson Wang",
-      email: "jacksonwang@email.com",
-      socialMedia: "@jacksonwang",
-      age: 31,
-      ethnicity: "Chinese",
-      avatar: "/assets/jacksonwang.jpg",
+      artistName: "Daniel Caesar",
+      email: "danielcaesar@email.com",
+      socialMedia: "@daniel",
+      age: 30,
+      ethnicity: "Canadian",
+      avatar: "/assets/daniel.jpg",
     },
     {
       artistName: "Big Naughty",
