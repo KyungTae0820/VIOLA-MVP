@@ -48,7 +48,7 @@ type ArtistProfile = {
   latestSubmission: string;
   statuses: Record<Status, number>;
   age?: number;
-  ethnicity?: string;
+  nationality?: string;
   avatar?: string;
 };
 
@@ -59,7 +59,7 @@ const mockArtists: Array<{
   email: string;
   socialMedia: string;
   age?: number;
-  ethnicity?: string;
+  nationality?: string;
   avatar?: string;
 }> = [
     {
@@ -67,7 +67,7 @@ const mockArtists: Array<{
       email: "danielcaesar@email.com",
       socialMedia: "@daniel",
       age: 30,
-      ethnicity: "Canadian",
+      nationality: "Canadian",
       avatar: "/assets/daniel.jpg",
     },
     {
@@ -75,7 +75,7 @@ const mockArtists: Array<{
       email: "bignaughty@email.com",
       socialMedia: "@bignaughtyboi",
       age: 22,
-      ethnicity: "Korean",
+      nationality: "Korean",
       avatar: "/assets/bignaughty.jpg",
     },
   ];
@@ -545,7 +545,7 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
       latestSubmission: latest,
       statuses,
       age: a.age,
-      ethnicity: a.ethnicity,
+      nationality: a.nationality,
       avatar: a.avatar,
     };
     return acc;
@@ -642,7 +642,7 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
                       <div className="col-span-3 md:col-span-3">
                         <h4 className="font-semibold text-white mb-1 text-lg leading-tight">Contact Info</h4>
                         <div className="space-y-1 text-sm text-white">
-                          <p className="md:whitespace-nowrap">Ethnicity: {selectedArtistData.ethnicity ?? "-"}</p>
+                          <p className="md:whitespace-nowrap">Nationality: {selectedArtistData.nationality ?? "-"}</p>
                           <p className="md:whitespace-nowrap">Age: {selectedArtistData.age ?? "-"}</p>
                           <p className="md:whitespace-nowrap">Email: {selectedArtistData.email}</p>
                           <p className="md:whitespace-nowrap">Social: {selectedArtistData.socialMedia}</p>
@@ -908,8 +908,8 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
 
                         <div className="mt-3 space-y-1 text-[15px] leading-6">
                           <div>
-                            <span className="text-slate-500">Ethnicity:</span>{' '}
-                            <span className="text-slate-900">{artist.ethnicity ?? '-'}</span>
+                            <span className="text-slate-500">Nationality:</span>{' '}
+                            <span className="text-slate-900">{artist.nationality ?? '-'}</span>
                           </div>
                           <div>
                             <span className="text-slate-500">Age:</span>{' '}
