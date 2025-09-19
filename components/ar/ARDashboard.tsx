@@ -61,6 +61,7 @@ const mockArtists: Array<{
   age?: number;
   nationality?: string;
   avatar?: string;
+  genre?: string;
 }> = [
     {
       artistName: "Daniel Caesar",
@@ -69,6 +70,7 @@ const mockArtists: Array<{
       age: 30,
       nationality: "Canadian",
       avatar: "/assets/daniel.jpg",
+      genre: "R&B",
     },
     {
       artistName: "Big Naughty",
@@ -77,6 +79,7 @@ const mockArtists: Array<{
       age: 22,
       nationality: "Korean",
       avatar: "/assets/bignaughty.jpg",
+      genre: "Hip Hop",
     },
   ];
 
@@ -532,10 +535,18 @@ export const ARDashboard = ({ onBack }: ARDashboardProps) => {
 
   const artistProfiles: Record<string, ArtistProfile> = mockArtists.reduce((acc, a) => {
     const tracks = heresiTracks ?? [];
-    const latest = tracks.map(t => t.submittedAt).sort((x, y) => +new Date(y) - +new Date(x))[0] ?? "";
+
+    const latest = tracks
+      .map(t => t.submittedAt)
+      .sort((x, y) => +new Date(y) - +new Date(x))[0] ?? "";
+
     const statuses: Record<Status, number> = { approved: 0, pending: 0, rejected: 0 };
     tracks.forEach(t => { statuses[t.status] += 1 as any; });
-    const genres = new Set<string>(tracks.map(t => t.genre));
+
+    const genres = new Set<string>();
+    if (a.genre) genres.add(a.genre);       
+    //tracks.forEach(t => { if (t.genre) genres.add(t.genre); });
+
     acc[a.artistName] = {
       artistName: a.artistName,
       email: a.email,
