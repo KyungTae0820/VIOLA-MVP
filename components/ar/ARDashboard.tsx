@@ -66,7 +66,7 @@ const mockArtists: Array<{
     {
       artistName: "Daniel Caesar",
       email: "danielcaesar@email.com",
-      socialMedia: "@daniel",
+      socialMedia: "@@danielcaesar",
       age: 30,
       nationality: "Canadian",
       avatar: "/assets/daniel.jpg",
