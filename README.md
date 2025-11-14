@@ -8,9 +8,9 @@ As the Co-Founder and CTO of VIOLA, I designed and implemented the minimum viabl
 📎 Interested in Learning More? 
 - View the VIOLA [Pitch Deck](https://www.canva.com/design/DAGyzKSVyxw/oQJQjDZzwLT7lgho-YilcA/view?utm_content=DAGyzKSVyxw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hfb7359d192)
 - View the VIOLA [Website](https://theviola.co/landingPage)
-  Login:
-   - Sample ID: coindrop
-   - Sample PWD: coindrop12
+**Login Sample (Demo Account)**  
+- **ID:** coindrop  
+- **Password:** coindrop12  
 
 ---
 
