@@ -6,11 +6,11 @@ As the Co-Founder and CTO of VIOLA, I designed and implemented the minimum viabl
 - Enhanced platform scalability and reliability by modularizing TypeScript and integrating RESTful APIs, while improving UX/UI through Framer Motion animations and iterative team collaboration.
 
 📎 Interested in Learning More? 
-- View the VIOLA [Pitch Deck](https://www.canva.com/design/DAGyzKSVyxw/oQJQjDZzwLT7lgho-YilcA/view?utm_content=DAGyzKSVyxw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hfb7359d192)
-- View the VIOLA [Website](https://theviola.co/landingPage)
-- **Login Sample (Demo Account)**  
-   - **ID:** coindrop  
-   - **Password:** coindrop12  
+- **View the VIOLA** [Pitch Deck](https://www.canva.com/design/DAGyzKSVyxw/oQJQjDZzwLT7lgho-YilcA/view?utm_content=DAGyzKSVyxw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hfb7359d192)
+- **View the VIOLA** [Website](https://theviola.co/landingPage)
+- Login Sample (Demo Account)  
+   - ID: coindrop  
+   - Password: coindrop12  
 
 ---
 
