@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# VIOLA – MVP
 
-## Getting Started
+As the Co-Founder and CTO of VIOLA, I designed and implemented the minimum viable product(MVP) of a modern, workflow-driven CRM SaaS application tailored for the music industry—specifically the sync ecosystem across Film, TV, Games, and Commercials. The platform aims to eliminate the long-standing organizational chaos in demo review and pitching by introducing a structured, AI-powered solution that brings efficiency, clarity, and speed to creative decisions.
 
-First, run the development server:
+- Designed and implemented a full-stack CRM SaaS web application for the music industry, applying object-oriented principles, Clerk-based authentication with webhook integration, and PostgreSQL RLS for secure data access control. 
+- Enhanced platform scalability and reliability by modularizing TypeScript and integrating RESTful APIs, while improving UX/UI through Framer Motion animations and iterative team collaboration.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+📎 Interested in Learning More? View the VIOLA [Pitch Deck](https://www.canva.com/design/DAGyzKSVyxw/oQJQjDZzwLT7lgho-YilcA/view?utm_content=DAGyzKSVyxw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hfb7359d192)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 📌 Core Sections
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Demo Submission System – Upload audio files and metadata
 
-## Learn More
+A&R Dashboard – View, filter, and organize incoming demos
 
-To learn more about Next.js, take a look at the following resources:
+User Authentication – Email/password login, Google OAuth
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Catalog Management – Organized library of submitted tracks
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Profiles & Settings – User profiles, team/label configuration
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Technologies Used
+### 🌐 Frontend
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js (App Router) — Routing, SSR/SSG, SEO optimization
+
+React — UI components, state management, rendering
+
+TypeScript — Strong typing for safer, more scalable development
+
+Tailwind CSS — Utility-first styling
+
+Shadcn UI — Reusable UI components
+
+Framer Motion (optional) — Animations & interactions
+
+### 🗄️ Backend
+
+Node.js — JavaScript/TypeScript runtime executing server-side logic
+
+Next.js API Routes — Backend handlers (auth checks, DB queries, server actions)
+
+Supabase Postgres — Relational database for users, submissions, metadata
+
+Supabase Auth — Secure user authentication + RLS
+
+Supabase Storage — File uploads and audio storage
+
+### ☁️ Infrastructure / DevOps
+
+Vercel — CI/CD, optimized builds, serverless deployment
+
+Supabase Platform — Managed DB, auth, and storage environment
+
+Environment Variables — Secure configuration for production
+
+### 🔤 Language & Development Tools
+
+TypeScript —
+Used across frontend and backend to improve reliability and maintainability.
+Adds static typing on top of JavaScript and reduces runtime errors.
+
+Node.js —
+Powers the backend runtime that executes Next.js server components, API routes, and SSR logic.
+
+ESLint + Prettier — Code quality & formatting
+
+Git / GitHub — Version control and collaboration
+
+---
+
+## 📦 Demo Submission Flow
+
+User uploads audio + metadata
+
+File stored securely in Supabase Storage
+
+Submission record created in Postgres
+
+Dashboard displays new demos for A&R review
+
+Teams manage and organize catalog entries
+
+---
+
+## 🚀 Getting Started
+
+1. **Install dependencies**
+   ```bash
+   npm install
+2. **Start the development server**
+   ```bash
+   npm run dev
+3. **Open http://localhost:3000 in your browser.**
+
+---
+
+## 📫 Contact
+
+- Email: kimkyungtae12386@gmail.com
+- LinkedIn: [KyungTae Kim](https://www.linkedin.com/in/kktkim)
+- GitHub: [KyungTae0820](https://github.com/KyungTae0820)
+- Website: [KT Portfolio](https://kt-portfolio-nu.vercel.app/)
