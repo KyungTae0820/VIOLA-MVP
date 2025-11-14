@@ -17,9 +17,13 @@ As the Co-Founder and CTO of VIOLA, I designed and implemented the minimum viabl
 ## 📌 Core Sections
 
 Demo Submission System – Upload audio files and metadata
+
 A&R Dashboard – View, filter, and organize incoming demos
+
 User Authentication – Email/password login, Google OAuth
+
 Catalog Management – Organized library of submitted tracks
+
 Profiles & Settings – User profiles, team/label configuration
 
 ---
@@ -28,24 +32,35 @@ Profiles & Settings – User profiles, team/label configuration
 ### 🌐 Frontend
 
 Next.js (App Router) — Routing, SSR/SSG, SEO optimization
+
 React — UI components, state management, rendering
+
 TypeScript — Strong typing for safer, more scalable development
+
 Tailwind CSS — Utility-first styling
+
 Shadcn UI — Reusable UI components
+
 Framer Motion — Animations & interactions
 
 ### 🗄️ Backend
 
 Node.js — TypeScript runtime executing server-side logic
+
 Next.js API Routes — Backend handlers (auth checks, DB queries, server actions)
+
 Supabase Postgres — Relational database for users, submissions, metadata
+
 Supabase Auth — Secure user authentication + RLS
+
 Supabase Storage — File uploads and audio storage
 
 ### ☁️ Infrastructure / DevOps
 
 Vercel — CI/CD, optimized builds, serverless deployment
+
 Supabase Platform — Managed DB, auth, and storage environment
+
 Environment Variables — Secure configuration for production
 
 ### 🔤 Language & Development Tools
